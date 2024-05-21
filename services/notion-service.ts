@@ -14,11 +14,8 @@ export default class NotionService {
   database = process.env.NOTION_BLOG_DATABASE_ID ?? "";
 
   async getPublishedPosts(): Promise<BlogPost[]> {
-    const database = process.env.NOTION_BLOG_DATABASE_ID ?? "";
-
-    // List all posts in the database
     const response = await this.client.databases.query({
-      database_id: database,
+      database_id: this.database,
       filter: {
         property: "Published",
         checkbox: {
@@ -39,13 +36,8 @@ export default class NotionService {
   }
 
   async getSingleBlogPost(slug: string): Promise<PostPage> {
-    let post, markdown;
-
-    const database = process.env.NOTION_BLOG_DATABASE_ID ?? "";
-
-    // Get the page by slug
     const response = await this.client.databases.query({
-      database_id: database,
+      database_id: this.database,
       filter: {
         property: "Slug",
         formula: {
@@ -61,12 +53,85 @@ export default class NotionService {
     }
 
     const page = response.results[0];
-
     const mdBlocks = await this.n2m.pageToMarkdown(page.id);
-    markdown = this.n2m.toMarkdownString(mdBlocks).parent;
-    post = NotionService.pageToPostTransformer(page);
+    const markdown = this.n2m.toMarkdownString(mdBlocks).parent;
+    const post = NotionService.pageToPostTransformer(page);
 
     return { post, markdown };
+  }
+
+  async getPostsByTag(tag: string): Promise<BlogPost[]> {
+    const response = await this.client.databases.query({
+      database_id: this.database,
+      filter: {
+        and: [
+          {
+            property: "Published",
+            checkbox: {
+              equals: true,
+            },
+          },
+          {
+            property: "Tags",
+            multi_select: {
+              contains: tag,
+            },
+          },
+        ],
+      },
+      sorts: [
+        {
+          property: "Created",
+          direction: "descending",
+        },
+      ],
+    });
+
+    return response.results.map((res) => {
+      return NotionService.pageToPostTransformer(res);
+    });
+  }
+
+  async searchPosts(query: string): Promise<BlogPost[]> {
+    const response = await this.client.databases.query({
+      database_id: this.database,
+      filter: {
+        and: [
+          {
+            property: "Published",
+            checkbox: {
+              equals: true,
+            },
+          },
+          {
+            or: [
+              {
+                property: "Name",
+                title: {
+                  contains: query,
+                },
+              },
+              {
+                property: "Description",
+                rich_text: {
+                  contains: query,
+                },
+              },
+            ],
+          },
+        ],
+      },
+      sorts: [
+        {
+          property: "Created",
+          direction: "descending",
+        },
+      ],
+    });
+
+    return response.results.map((res) => {
+      return NotionService.pageToPostTransformer(res);
+    });
   }
 
   private static pageToPostTransformer(page: any): BlogPost {

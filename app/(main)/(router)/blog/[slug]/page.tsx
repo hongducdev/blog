@@ -1,13 +1,22 @@
 import { Metadata } from "next";
+import Image from "next/image";
+
+import moment from "moment";
 import NotionService from "@/services/notion-service";
 import { PostPage } from "@/@types/schema";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/base16/dracula.css"; // Import theme Dracula
-import moment from "moment";
-import Image from "next/image";
+import "highlight.js/styles/base16/dracula.css";
 import { CalendarClock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 interface BlogPageProps {
   params: {
@@ -74,11 +83,26 @@ const BlogPage = async ({ params }: BlogPageProps) => {
           </div>
         </div>
       </div>
-      <article className="prose dark:prose-dark max-w-7xl w-full mx-auto p-4">
-        <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-          {postPage.markdown}
-        </ReactMarkdown>
-      </article>
+      <section className="max-w-7xl w-full mx-auto">
+        <div className="py-5">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{postPage.post.title}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+        <article className="prose dark:prose-dark max-w-7xl w-full mx-auto">
+          <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+            {postPage.markdown}
+          </ReactMarkdown>
+        </article>
+      </section>
     </div>
   );
 };

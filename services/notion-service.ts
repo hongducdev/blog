@@ -3,15 +3,15 @@ import { NotionToMarkdown } from "notion-to-md";
 import { BlogPost, PostPage } from "@/@types/schema";
 
 export default class NotionService {
-  client: Client;
-  n2m: NotionToMarkdown;
+  private client: Client;
+  private n2m: NotionToMarkdown;
 
   constructor() {
     this.client = new Client({ auth: process.env.NOTION_ACCESS_TOKEN });
     this.n2m = new NotionToMarkdown({ notionClient: this.client });
   }
 
-  database = process.env.NOTION_BLOG_DATABASE_ID ?? "";
+  private database = process.env.NOTION_BLOG_DATABASE_ID ?? "";
 
   async getPublishedPosts(): Promise<BlogPost[]> {
     const response = await this.client.databases.query({
@@ -76,48 +76,6 @@ export default class NotionService {
             multi_select: {
               contains: tag,
             },
-          },
-        ],
-      },
-      sorts: [
-        {
-          property: "Created",
-          direction: "descending",
-        },
-      ],
-    });
-
-    return response.results.map((res) => {
-      return NotionService.pageToPostTransformer(res);
-    });
-  }
-
-  async searchPosts(query: string): Promise<BlogPost[]> {
-    const response = await this.client.databases.query({
-      database_id: this.database,
-      filter: {
-        and: [
-          {
-            property: "Published",
-            checkbox: {
-              equals: true,
-            },
-          },
-          {
-            or: [
-              {
-                property: "Name",
-                title: {
-                  contains: query,
-                },
-              },
-              {
-                property: "Description",
-                rich_text: {
-                  contains: query,
-                },
-              },
-            ],
           },
         ],
       },

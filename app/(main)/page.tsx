@@ -2,6 +2,7 @@ import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { BlogPost } from "@/@types/schema";
 import NotionService from "@/services/notion-service";
 import Image from "next/image";
+import Search from "./_components/search";
 
 export const revalidate = 60; // Revalidate the page every 60 seconds
 
@@ -11,6 +12,7 @@ const MainPage = async () => {
 
   return (
     <div className="max-w-7xl mx-auto ">
+      <Search posts={posts} />
       <BentoGrid>
         {posts.map((post: BlogPost, i: any) => (
           <BentoGridItem

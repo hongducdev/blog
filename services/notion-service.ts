@@ -1,6 +1,7 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import { BlogPost, PostPage } from "@/@types/schema";
+import { error } from "console";
 
 export default class NotionService {
   private client: Client;
@@ -49,6 +50,7 @@ export default class NotionService {
     });
 
     if (!response.results[0]) {
+      // return 404
       throw new Error("Post not found");
     }
 

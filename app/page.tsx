@@ -3,10 +3,13 @@ import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { BlogPost } from "@/@types/schema";
 import Search from "./_components/search";
 
-export const getData = async () => {
+// Function to fetch data
+const getData = async () => {
   try {
     const response = await fetch("https://blog.hongducdev.com/api/posts");
-    console.log(response);
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
     return await response.json();
   } catch (error) {
     console.error("Failed to fetch data", error);
@@ -15,6 +18,7 @@ export const getData = async () => {
 };
 
 const MainPage = async () => {
+  // Fetch data
   const posts: BlogPost[] = await getData();
 
   return (

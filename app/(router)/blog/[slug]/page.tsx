@@ -25,6 +25,11 @@ interface BlogPageProps {
 
 export const generateStaticParams = async () => {
   const response = await fetch("https://blog.hongducdev.com/api/posts");
+  if (!response.ok) {
+    console.error("Failed to fetch posts", response.statusText);
+    return [];
+  }
+
   const posts: BlogPost[] = await response.json();
   return posts.map((post) => ({
     slug: post.slug,
@@ -38,6 +43,9 @@ export const generateMetadata = async ({
     const response = await fetch(
       `https://blog.hongducdev.com/api/posts/${params.slug}`
     );
+    if (!response.ok) {
+      throw new Error("Failed to fetch post");
+    }
     const postPage: PostPage = await response.json();
     return {
       title: postPage.post.title,
@@ -64,6 +72,10 @@ const BlogPage = async ({ params }: BlogPageProps) => {
     const response = await fetch(
       `https://blog.hongducdev.com/api/posts/${params.slug}`
     );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch post");
+    }
 
     const postPage: PostPage = await response.json();
 

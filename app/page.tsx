@@ -3,23 +3,36 @@ import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { BlogPost } from "@/@types/schema";
 import Search from "./_components/search";
 
-// Function to fetch data
-const getData = async () => {
+export const getData = async () => {
   try {
-    const response = await fetch("https://blog.hongducdev.com/api/posts");
+    const response = await fetch("https://blog.hongducdev.com/api/posts", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (!response.ok) {
+      console.error(
+        "Failed to fetch data: ",
+        response.status,
+        response.statusText
+      );
       throw new Error("Failed to fetch data");
     }
     return await response.json();
   } catch (error) {
-    console.error("Failed to fetch data", error);
+    console.error("Error fetching data: ", error);
     throw new Error("Failed to fetch data");
   }
 };
 
 const MainPage = async () => {
-  // Fetch data
-  const posts: BlogPost[] = await getData();
+  let posts: BlogPost[] = [];
+
+  try {
+    posts = await getData();
+  } catch (error) {
+    console.error("Error in MainPage:", error.message);
+  }
 
   return (
     <div className="max-w-7xl mx-auto">

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import moment from "moment";
-import { BlogPost, PostPage } from "@/@types/schema";
+import { BlogPost, PostPage, Tag } from "@/@types/schema";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/base16/dracula.css";
@@ -59,6 +59,7 @@ export const generateMetadata = async ({
 const BlogPage = async ({ params }: BlogPageProps) => {
   try {
     const postPage = await getSingleBlogPost(params.slug);
+    console.log("🚀 ~ BlogPage ~ postPage:", postPage);
 
     return (
       <div className="flex flex-col gap-5">
@@ -86,7 +87,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
               <div className="mt-4">
                 {postPage.post.tags && (
                   <div className="flex flex-wrap my-2 space-x-2">
-                    {postPage.post.tags.map((tag) => (
+                    {postPage.post.tags.map((tag: Tag) => (
                       <Badge key={tag.id}>#{tag.name}</Badge>
                     ))}
                   </div>

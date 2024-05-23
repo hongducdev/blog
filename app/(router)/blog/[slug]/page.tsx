@@ -25,10 +25,15 @@ interface BlogPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const posts: BlogPost[] = await getPublishedPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    const posts: BlogPost[] = await getPublishedPosts();
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return [];
+  }
 };
 
 export const generateMetadata = async ({
@@ -49,6 +54,7 @@ export const generateMetadata = async ({
       },
     };
   } catch (error) {
+    console.error("Error fetching post metadata:", error);
     return {
       title: "Post not found",
       description: "The post you are looking for does not exist.",
@@ -59,7 +65,6 @@ export const generateMetadata = async ({
 const BlogPage = async ({ params }: BlogPageProps) => {
   try {
     const postPage = await getSingleBlogPost(params.slug);
-    console.log("🚀 ~ BlogPage ~ postPage:", postPage);
 
     return (
       <div className="flex flex-col gap-5">
@@ -119,6 +124,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
       </div>
     );
   } catch (error) {
+    console.error("Error fetching post page:", error);
     notFound();
   }
 };

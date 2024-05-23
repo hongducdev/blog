@@ -1,10 +1,8 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-
 import moment from "moment";
-import NotionService from "@/services/notion-service";
-import { PostPage } from "@/@types/schema";
+import { BlogPost, PostPage } from "@/@types/schema";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/base16/dracula.css";
@@ -26,9 +24,8 @@ interface BlogPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const notionService = new NotionService();
-  const posts = await notionService.getPublishedPosts();
-
+  const response = await fetch("https://blog.hongducdev.com/api/posts");
+  const posts: BlogPost[] = await response.json();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -37,29 +34,38 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({
   params,
 }: BlogPageProps): Promise<Metadata> => {
-  const notionService = new NotionService();
-  const post = await notionService.getSingleBlogPost(params.slug);
-
-  return {
-    title: post.post.title,
-    description: post.post.description,
-    openGraph: {
-      images: [
-        {
-          url: post.post.cover,
-          alt: post.post.title,
-        },
-      ],
-    },
-  };
+  try {
+    const response = await fetch(
+      `https://blog.hongducdev.com/api/posts/${params.slug}`
+    );
+    const postPage: PostPage = await response.json();
+    return {
+      title: postPage.post.title,
+      description: postPage.post.description,
+      openGraph: {
+        images: [
+          {
+            url: postPage.post.cover,
+            alt: postPage.post.title,
+          },
+        ],
+      },
+    };
+  } catch (error) {
+    return {
+      title: "Post not found",
+      description: "The post you are looking for does not exist.",
+    };
+  }
 };
 
 const BlogPage = async ({ params }: BlogPageProps) => {
   try {
-    const notionService = new NotionService();
-    const postPage: PostPage = await notionService.getSingleBlogPost(
-      params.slug
+    const response = await fetch(
+      `https://blog.hongducdev.com/api/posts/${params.slug}`
     );
+
+    const postPage: PostPage = await response.json();
 
     return (
       <div className="flex flex-col gap-5">
@@ -119,10 +125,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
       </div>
     );
   } catch (error) {
-    console.error(error);
-    if (error === "Post not found") {
-      notFound();
-    }
+    notFound();
   }
 };
 

@@ -1,31 +1,38 @@
+import Image from "next/image";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { BlogPost } from "@/@types/schema";
-import NotionService from "@/services/notion-service";
-import Image from "next/image";
 import Search from "./_components/search";
 
-export const revalidate = 60; // Revalidate the page every 60 seconds
+export const getData = async () => {
+  try {
+    const response = await fetch("https://blog.hongducdev.com/api/posts");
+    console.log(response);
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch data", error);
+    throw new Error("Failed to fetch data");
+  }
+};
 
 const MainPage = async () => {
-  const notionService = new NotionService();
-  const posts: BlogPost[] = await notionService.getPublishedPosts();
+  const posts: BlogPost[] = await getData();
 
   return (
-    <div className="max-w-7xl mx-auto ">
+    <div className="max-w-7xl mx-auto">
       <Search posts={posts} />
       <BentoGrid>
-        {posts.map((post: BlogPost, i: any) => (
+        {posts.map((post: BlogPost, i: number) => (
           <BentoGridItem
-            key={i}
+            key={post.slug}
             header={
-              post.cover == "" ? (
+              post.cover === "" ? (
                 <Skeleton />
               ) : (
                 <div className="relative h-full w-full">
                   <Image
                     src={post.cover}
                     alt={post.title}
-                    fill
+                    layout="fill"
                     className="object-cover rounded-xl"
                   />
                 </div>

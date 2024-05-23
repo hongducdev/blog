@@ -16,6 +16,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { getPublishedPosts, getSingleBlogPost } from "@/apis";
 
 interface BlogPageProps {
   params: {
@@ -24,13 +25,7 @@ interface BlogPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const response = await fetch("https://blog.hongducdev.com/api/posts");
-  if (!response.ok) {
-    console.error("Failed to fetch posts", response.statusText);
-    return [];
-  }
-
-  const posts: BlogPost[] = await response.json();
+  const posts: BlogPost[] = await getPublishedPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -40,13 +35,7 @@ export const generateMetadata = async ({
   params,
 }: BlogPageProps): Promise<Metadata> => {
   try {
-    const response = await fetch(
-      `https://blog.hongducdev.com/api/posts/${params.slug}`
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch post");
-    }
-    const postPage: PostPage = await response.json();
+    const postPage: PostPage = await getSingleBlogPost(params.slug);
     return {
       title: postPage.post.title,
       description: postPage.post.description,
@@ -69,15 +58,7 @@ export const generateMetadata = async ({
 
 const BlogPage = async ({ params }: BlogPageProps) => {
   try {
-    const response = await fetch(
-      `https://blog.hongducdev.com/api/posts/${params.slug}`
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch post");
-    }
-
-    const postPage: PostPage = await response.json();
+    const postPage = await getSingleBlogPost(params.slug);
 
     return (
       <div className="flex flex-col gap-5">

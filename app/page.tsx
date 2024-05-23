@@ -1,42 +1,22 @@
 import Image from "next/image";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { BlogPost } from "@/@types/schema";
-import Search from "./_components/search";
+import { getPublishedPosts } from "@/apis";
 
-export const getData = async () => {
+const fetchPosts = async () => {
   try {
-    const response = await fetch("https://blog.hongducdev.com/api/posts", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      console.error(
-        "Failed to fetch data: ",
-        response.status,
-        response.statusText
-      );
-      throw new Error("Failed to fetch data");
-    }
-    return await response.json();
+    const response = await getPublishedPosts();
+    return response;
   } catch (error) {
-    console.error("Error fetching data: ", error);
-    throw new Error("Failed to fetch data");
+    console.error(error);
   }
 };
 
 const MainPage = async () => {
-  let posts: BlogPost[] = [];
-
-  try {
-    posts = await getData();
-  } catch (error) {
-    console.error("Error in MainPage:", error.message);
-  }
+  const posts = await fetchPosts();
 
   return (
     <div className="max-w-7xl mx-auto">
-      <Search posts={posts} />
       <BentoGrid>
         {posts.map((post: BlogPost, i: number) => (
           <BentoGridItem

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,13 +11,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { Button } from "@/components/ui/button";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, Link2 } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 interface NavPageDetailProps {
   title: string;
@@ -27,7 +25,10 @@ interface NavPageDetailProps {
 const NavPageDetail = ({ title, link }: NavPageDetailProps) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(link);
-    alert("Link copied to clipboard!");
+    toast({
+      title: "Link copied!",
+      description: "The link has been copied to your clipboard.",
+    });
   };
 
   const handleShare = (platform: string) => {
@@ -78,10 +79,12 @@ const NavPageDetail = ({ title, link }: NavPageDetailProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>Share this page</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleCopyLink}>
-            Copy link
+          <DropdownMenuItem
+            onClick={handleCopyLink}
+            className="flex items-center space-x-10"
+          >
+            <span>Copy link</span>
+            <Link2 className="w-4 h-4" />
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleShare("twitter")}>
             Twitter
@@ -95,7 +98,6 @@ const NavPageDetail = ({ title, link }: NavPageDetailProps) => {
           <DropdownMenuItem onClick={() => handleShare("reddit")}>
             Reddit
           </DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

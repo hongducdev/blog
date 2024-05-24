@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/config/site";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/footer";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -80,6 +81,7 @@ export default function RootLayout({
             <main className="pb-10">{children}</main>
             <Footer />
           </main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

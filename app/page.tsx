@@ -3,6 +3,8 @@ import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { BlogPost } from "@/@types/schema";
 import { getPublishedPosts } from "@/apis";
 
+export const revalidate = 60;
+
 const fetchPosts = async () => {
   try {
     const response = await getPublishedPosts();

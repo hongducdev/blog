@@ -51,7 +51,7 @@ export const BentoGridItem = ({
       {header}
       <div className="group-hover/bento:translate-x-2 transition duration-200">
         <span className="text-4xl">{icon}</span>
-        <div className="text-2xl">
+        <div className="text-2xl line-clamp-1">
           {link ? (
             <Link href={link}>
               <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2 hover:text-green-400 dark:hover:text-green-400 cursor-pointer">
@@ -59,12 +59,12 @@ export const BentoGridItem = ({
               </div>
             </Link>
           ) : (
-            <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2 line-clamp-1">
+            <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
               {title}
             </div>
           )}
         </div>
-        <div className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300">
+        <div className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300 line-clamp-1">
           {description}
         </div>
         {tags && (

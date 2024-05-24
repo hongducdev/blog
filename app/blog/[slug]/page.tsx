@@ -8,15 +8,9 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/base16/dracula.css";
 import { CalendarClock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+
 import { getPublishedPosts, getSingleBlogPost } from "@/apis";
+import NavPageDetail from "@/app/_components/nav-page-detail";
 
 interface BlogPageProps {
   params: {
@@ -107,17 +101,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
         </div>
         <section className="max-w-7xl w-full mx-auto px-2 lg:px-0">
           <div className="py-5">
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>{postPage.post.title}</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+            <NavPageDetail title={postPage.post.title} link={`${process.env.BASE_URL}/blog/${postPage.post.slug}`} />
           </div>
           <article className="prose dark:prose-invert max-w-7xl w-full mx-auto">
             <ReactMarkdown rehypePlugins={[rehypeHighlight]}>

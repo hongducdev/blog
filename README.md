@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌟 Hongdudev's Personal Blog 🌟
 
-## Getting Started
+A personal blog by hongdudev. I write about web development, programming, and tech.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+- **Framework**: Built with Next.js for server-side rendering and static site generation.
+- **Styling**: Styled using Tailwind CSS for a highly customizable and responsive design.
+- **UI Components**: Utilizes Shadcn UI for accessible and beautiful UI components.
+- **CMS**: Integrated with Notion as the content management system for easy blog post creation and management.
+
+## 🛠️ Getting Started
+
+### 📋 Prerequisites
+
+- Node.js (v14.x or later)
+- pnpm
+
+### 📥 Installation
+
+1. Clone the repository:
+
+    ```sh
+    git clone https://github.com/hongdudev/blog.git
+    cd blog
+    ```
+
+2. Install the dependencies:
+
+    ```sh
+    pnpm install
+    ```
+
+3. Create a `.env` file in the root directory and add your Notion access token, blog database ID, and base URL:
+
+    ```env
+    NOTION_ACCESS_TOKEN=your-notion-access-token
+    NOTION_BLOG_DATABASE_ID=your-notion-database-id
+    BASE_URL=your-base-url
+    ```
+
+### 🔑 Getting Notion Access Token and Database ID
+
+To obtain your Notion access token and database ID:
+
+1. Go to [Notion Developers](https://developers.notion.com/).
+2. Create an integration to get your Notion access token.
+3. Share your Notion database with the integration to get the database ID.
+
+### ▶️ Running the Development Server
+
+To start the development server, run:
+
+```sh
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🏗️ Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+To create an optimized production build, run:
 
-## Learn More
+```sh
+pnpm build
+```
 
-To learn more about Next.js, take a look at the following resources:
+This will generate a `/.next` directory containing the optimized build output.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🌐 Starting the Production Server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+To start the production server, run:
 
-## Deploy on Vercel
+```sh
+pnpm start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🌍 Environment Variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `NOTION_ACCESS_TOKEN`: The token for accessing the Notion API. You can obtain this by creating an integration on Notion.
+- `NOTION_BLOG_DATABASE_ID`: The ID of the Notion database where your blog posts are stored.
+- `BASE_URL`: The base URL of your blog (e.g., `https://yourdomain.com`).
+
+## 🚢 Deployment
+
+You can deploy your Next.js application to a variety of hosting providers, such as Vercel, Netlify, or any other platform that supports Node.js applications.
+
+### 🚀 Deploying to Vercel
+
+To deploy your app to Vercel, follow these steps:
+
+1. Install the Vercel CLI:
+
+    ```sh
+    npm install -g vercel
+    ```
+
+2. Deploy your application:
+
+    ```sh
+    vercel
+    ```
+
+Follow the prompts to link your project with Vercel, configure your settings, and deploy your app.
+
+## 🤝 Contributing
+
+Contributions are welcome! If you have any ideas or suggestions, feel free to open an issue or submit a pull request.
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## 📧 Contact
+
+If you have any questions or feedback, feel free to reach out to me at [hey@hongducdev.com](mailto:hey@hongducdev.com).
+
+---
+
+Happy coding!
+
+Hongdudev 🌟

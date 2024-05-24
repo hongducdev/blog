@@ -4,7 +4,7 @@ import React from "react";
 const Footer = () => {
   return (
     <footer className="border-y">
-      <div className="max-w-7xl mx-auto flex flex-col items-center p-3">
+      <div className="max-w-7xl mx-auto flex flex-col items-center p-3 text-xs lg:text-sm">
         <span className="">
           Copyright ©{" "}
           <Link
@@ -14,7 +14,7 @@ const Footer = () => {
             hongducdev
           </Link>
         </span>
-        <div className="flex items-center space-x-2">
+        <div className="lg:flex items-center space-x-2 hidden">
           <p>Powered by</p>
           <Link
             href="https://nextjs.org/"

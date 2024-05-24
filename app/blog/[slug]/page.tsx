@@ -80,15 +80,19 @@ const BlogPage = async ({ params }: BlogPageProps) => {
           <div className="absolute bg-black bg-opacity-30 w-full h-[40vh] inset-0 top-0 left-0"></div>
           <div className="absolute inset-0 flex items-center">
             <div className="max-w-7xl w-full px-4 mx-auto text-white">
-              <h1 className="text-5xl font-bold">{postPage.post.title}</h1>
-              <p className="text-lg mt-4">{postPage.post.description}</p>
-              <p className="flex items-center gap-2 mt-4">
+              <h1 className="text-2xl lg:text-5xl font-bold">
+                {postPage.post.title}
+              </h1>
+              <p className="text-sm lg:text-lg mt-4">
+                {postPage.post.description}
+              </p>
+              <div className="flex items-center gap-2 mt-4 text-sm lg:text-lg">
                 <CalendarClock className="w-5 h-5" />
                 <span>
                   Updated on{" "}
                   {moment(postPage.post.date).format("MMMM Do, YYYY")}
                 </span>
-              </p>
+              </div>
               <div className="mt-4">
                 {postPage.post.tags && (
                   <div className="flex flex-wrap my-2 space-x-2">
@@ -101,7 +105,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
             </div>
           </div>
         </div>
-        <section className="max-w-7xl w-full mx-auto">
+        <section className="max-w-7xl w-full mx-auto px-2 lg:px-0">
           <div className="py-5">
             <Breadcrumb>
               <BreadcrumbList>

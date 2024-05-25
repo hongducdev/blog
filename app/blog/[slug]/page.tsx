@@ -8,9 +8,10 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/base16/dracula.css";
 import { CalendarClock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
 import { getPublishedPosts, getSingleBlogPost } from "@/apis";
 import NavPageDetail from "@/app/_components/nav-page-detail";
+
+export const revalidate = 60;
 
 interface BlogPageProps {
   params: {

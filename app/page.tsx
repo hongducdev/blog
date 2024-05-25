@@ -40,6 +40,7 @@ const MainPage = async () => {
             title={post.title}
             description={post.description}
             link={`/blog/${post.slug}`}
+            views={post.views}
             tags={post.tags}
             icon={
               post.icon && post.icon.startsWith("http") ? (

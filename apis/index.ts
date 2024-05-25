@@ -2,6 +2,10 @@ import axios from "axios";
 
 const baseURL = process.env.BASE_URL;
 
+if (!baseURL) {
+  throw new Error("BASE_URL is not defined");
+}
+
 export const getPublishedPosts = async () => {
   const response = await axios.get(`${baseURL}/api/posts`);
   return response.data;

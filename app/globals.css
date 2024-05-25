@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -336,5 +336,21 @@
   .hljs-quote,
   .hljs-deletion {
     color: #6272a4;
+  }
+
+  /* Custom scroll bar */
+  /* width */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-lg bg-gradient-to-br from-[#4AC29A] to-[#BDFFF3];
   }
 }

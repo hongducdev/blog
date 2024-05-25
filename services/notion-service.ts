@@ -1,7 +1,6 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
-import { BlogPost, PostPage } from "@/@types/schema";
-import { error } from "console";
+import { BlogPost, PostPage, Tag } from "@/@types/schema";
 
 export default class NotionService {
   private client: Client;
@@ -62,35 +61,15 @@ export default class NotionService {
     return { post, markdown };
   }
 
-  async getPostsByTag(tag: string): Promise<BlogPost[]> {
-    const response = await this.client.databases.query({
-      database_id: this.database,
-      filter: {
-        and: [
-          {
-            property: "Published",
-            checkbox: {
-              equals: true,
-            },
-          },
-          {
-            property: "Tags",
-            multi_select: {
-              contains: tag,
-            },
-          },
-        ],
-      },
-      sorts: [
-        {
-          property: "Created",
-          direction: "descending",
-        },
-      ],
-    });
 
-    return response.results.map((res) => {
-      return NotionService.pageToPostTransformer(res);
+  async updatePostViews(id: string, views: number): Promise<void> {
+    await this.client.pages.update({
+      page_id: id,
+      properties: {
+        Views: {
+          number: views,
+        },
+      },
     });
   }
 
@@ -126,15 +105,22 @@ export default class NotionService {
       }
     }
 
+    const tags = page.properties.Tags.multi_select.map((tag: any) => ({
+      id: tag.id,
+      name: tag.name,
+      color: tag.color,
+    }));
+
     return {
       id: page.id,
       slug: page.properties.Slug.formula.string,
       icon,
       cover,
       title: page.properties.Name.title[0]?.plain_text ?? "",
-      tags: page.properties.Tags.multi_select,
+      tags,
       description: page.properties.Description.rich_text[0]?.plain_text ?? "",
       date: page.properties.Updated.last_edited_time,
+      views: page.properties.Views?.number ?? 0,
     };
   }
 }

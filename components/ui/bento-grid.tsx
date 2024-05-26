@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Tag } from "@/@types/schema";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Eye } from "lucide-react";
 
 export const BentoGrid = ({
   className,
@@ -31,7 +30,6 @@ export const BentoGridItem = ({
   icon,
   link,
   tags,
-  views,
 }: {
   className?: string;
   title?: string | React.ReactNode;
@@ -40,7 +38,6 @@ export const BentoGridItem = ({
   icon?: React.ReactNode;
   link?: string;
   tags?: Tag[];
-  views?: number;
 }) => {
   return (
     <div
@@ -68,22 +65,13 @@ export const BentoGridItem = ({
         <div className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300 line-clamp-1">
           {description}
         </div>
-        <div className="flex items-center justify-between">
-          {tags && (
-            <div className="flex flex-wrap my-2 space-x-2">
-              {tags.map((tag) => (
-                <Badge key={tag.id}>#{tag.name}</Badge>
-              ))}
-            </div>
-          )}
-          <div className="flex items-center space-x-2 text-sm text-neutral-500 dark:text-neutral-300">
-            <div className="flex items-center space-x-1">
-              <Eye className="w-4 h-4" />
-              <span>{views}</span>
-            </div>
-    
+        {tags && (
+          <div className="flex flex-wrap my-2 space-x-2">
+            {tags.map((tag) => (
+              <Badge key={tag.id}>#{tag.name}</Badge>
+            ))}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

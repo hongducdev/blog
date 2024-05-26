@@ -9,15 +9,7 @@ import "highlight.js/styles/base16/dracula.css";
 import { CalendarClock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getPublishedPosts, getSingleBlogPost } from "@/apis";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import SidebarPageDetail from "@/app/_components/sidebar-page-detail";
+import NavPageDetail from "@/app/_components/nav-page-detail";
 
 export const revalidate = 60;
 
@@ -108,33 +100,18 @@ const BlogPage = async ({ params }: BlogPageProps) => {
             </div>
           </div>
         </div>
-        <section className="max-w-7xl w-full mx-auto px-2 lg:px-0 flex flex-row">
-          <SidebarPageDetail
-            views={postPage.post.views}
-            favorites={postPage.post.favorites}
-            title={postPage.post.title}
-            slug={postPage.post.slug}
-          />
-          <div>
-            <div className="py-5">
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>{postPage.post.title}</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </div>
-            <article className="prose dark:prose-invert max-w-7xl w-full mx-auto">
-              <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-                {postPage.markdown}
-              </ReactMarkdown>
-            </article>
+        <section className="max-w-7xl w-full mx-auto px-2 lg:px-0">
+          <div className="py-5">
+            <NavPageDetail
+              title={postPage.post.title}
+              link={`${process.env.BASE_URL}/blog/${postPage.post.slug}`}
+            />
           </div>
+          <article className="prose dark:prose-invert max-w-7xl w-full mx-auto">
+            <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+              {postPage.markdown}
+            </ReactMarkdown>
+          </article>
         </section>
       </div>
     );

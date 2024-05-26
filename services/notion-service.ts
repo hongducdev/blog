@@ -120,7 +120,6 @@ export default class NotionService {
       tags,
       description: page.properties.Description.rich_text[0]?.plain_text ?? "",
       date: page.properties.Updated.last_edited_time,
-      views: page.properties.Views?.number ?? 0,
     };
   }
 }

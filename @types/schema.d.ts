@@ -13,7 +13,6 @@ export type BlogPost = {
   tags: Tag[];
   description: string;
   date: string;
-  views: number;
 };
 
 export type PostPage = {

@@ -68,7 +68,12 @@ export const BentoGridItem = ({
         {tags && (
           <div className="flex flex-wrap my-2 space-x-2">
             {tags.map((tag) => (
-              <Badge key={tag.id}>#{tag.name}</Badge>
+              <Badge
+                key={tag.id}
+                href={`${process.env.BASE_URL}/tag/${tag.name}`}
+              >
+                #{tag.name}
+              </Badge>
             ))}
           </div>
         )}

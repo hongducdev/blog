@@ -92,7 +92,13 @@ const BlogPage = async ({ params }: BlogPageProps) => {
                 {postPage.post.tags && (
                   <div className="flex flex-wrap my-2 space-x-2">
                     {postPage.post.tags.map((tag: Tag) => (
-                      <Badge key={tag.id}>#{tag.name}</Badge>
+                      <Badge
+                        key={tag.id}
+                        variant="secondary"
+                        href={`${process.env.BASE_URL}/tag/${tag.name}`}
+                      >
+                        #{tag.name}
+                      </Badge>
                     ))}
                   </div>
                 )}

@@ -61,18 +61,6 @@ export default class NotionService {
     return { post, markdown };
   }
 
-
-  async updatePostViews(id: string, views: number): Promise<void> {
-    await this.client.pages.update({
-      page_id: id,
-      properties: {
-        Views: {
-          number: views,
-        },
-      },
-    });
-  }
-
   private static pageToPostTransformer(page: any): BlogPost {
     let cover = "";
     if (page.cover) {
@@ -121,5 +109,68 @@ export default class NotionService {
       description: page.properties.Description.rich_text[0]?.plain_text ?? "",
       date: page.properties.Updated.last_edited_time,
     };
+  }
+
+  async getAllTags(): Promise<Tag[]> {
+    const response = await this.client.databases.query({
+      database_id: this.database,
+      filter: {
+        property: "Published",
+        checkbox: {
+          equals: true,
+        },
+      },
+    });
+
+    const tags: Tag[] = [];
+    const tagSet = new Set<string>();
+
+    response.results.forEach((page: any) => {
+      const postTags = page.properties.Tags.multi_select;
+      postTags.forEach((tag: any) => {
+        if (!tagSet.has(tag.id)) {
+          tagSet.add(tag.id);
+          tags.push({ id: tag.id, name: tag.name, color: tag.color });
+        }
+      });
+    });
+
+    return tags;
+  }
+
+  async getPostsByTag(tagName: string): Promise<BlogPost[]> {
+    if (!tagName) {
+      return [];
+    }
+
+    const response = await this.client.databases.query({
+      database_id: this.database,
+      filter: {
+    and: [
+      {
+        property: "Published",
+        checkbox: {
+          equals: true,
+        },
+      },
+      {
+        property: "Tags",
+        multi_select: {
+          contains: tagName,
+        },
+      },
+    ],
+  },
+      sorts: [
+        {
+          property: "Created",
+          direction: "descending",
+        },
+      ],
+    });
+
+    return response.results.map((res) => {
+      return NotionService.pageToPostTransformer(res);
+    });
   }
 }

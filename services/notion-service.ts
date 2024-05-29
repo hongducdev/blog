@@ -139,28 +139,24 @@ export default class NotionService {
   }
 
   async getPostsByTag(tagName: string): Promise<BlogPost[]> {
-    if (!tagName) {
-      return [];
-    }
-
     const response = await this.client.databases.query({
       database_id: this.database,
       filter: {
-    and: [
-      {
-        property: "Published",
-        checkbox: {
-          equals: true,
-        },
+        and: [
+          {
+            property: "Published",
+            checkbox: {
+              equals: true,
+            },
+          },
+          {
+            property: "Tags",
+            multi_select: {
+              contains: tagName,
+            },
+          },
+        ],
       },
-      {
-        property: "Tags",
-        multi_select: {
-          contains: tagName,
-        },
-      },
-    ],
-  },
       sorts: [
         {
           property: "Created",
@@ -168,6 +164,11 @@ export default class NotionService {
         },
       ],
     });
+
+    if (!response.results.length) {
+      // return 404
+      throw new Error("No posts found");
+    }
 
     return response.results.map((res) => {
       return NotionService.pageToPostTransformer(res);

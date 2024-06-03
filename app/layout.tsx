@@ -3,9 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/config/site";
-import Navbar from "./_components/navbar";
-import Footer from "./_components/footer";
+import Navbar from "./(main)/_components/navbar";
+import Footer from "./(main)/_components/footer";
 import { Toaster } from "@/components/ui/toaster";
+import NextAuthProvider from "@/components/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -76,11 +77,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main>
-            <Navbar />
-            <main className="pb-10">{children}</main>
-            <Footer />
-          </main>
+          <NextAuthProvider>
+            <main>{children}</main>
+          </NextAuthProvider>
           <Toaster />
         </ThemeProvider>
       </body>

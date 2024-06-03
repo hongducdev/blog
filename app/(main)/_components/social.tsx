@@ -13,7 +13,7 @@ const socials: Social[] = [
     id: 1,
     name: "Github",
     link: "https://github.com/hongducdev",
-    icon: <Github />,
+    icon: <Github className="w-9 h-9" />,
   },
 ];
 

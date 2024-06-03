@@ -9,7 +9,7 @@ import "highlight.js/styles/base16/dracula.css";
 import { CalendarClock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getPublishedPosts, getSingleBlogPost } from "@/apis";
-import NavPageDetail from "@/app/_components/nav-page-detail";
+import NavPageDetail from "@/app/(main)/_components/nav-page-detail";
 
 export const revalidate = 60;
 

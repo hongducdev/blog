@@ -1,6 +1,6 @@
 import { BlogPost, Tag } from "@/@types/schema";
 import { getPostsByTag, getTags } from "@/apis";
-import ListPostCard from "@/app/_components/list-post-card";
+import ListPostCard from "@/app/(main)/_components/list-post-card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";

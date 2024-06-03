@@ -1,5 +1,7 @@
+"use client";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import Logo from "@/components/logo";
-import React from "react";
 import Social from "./social";
 import SearchCommand from "./search-command";
 import { Button } from "@/components/ui/button";
@@ -13,8 +15,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ThemeToggle from "@/components/theme-toggle";
+import UserLogged from "./user-logged";
 
 const Navbar = () => {
+  const { status } = useSession();
+
   return (
     <div className="sticky top-0 p-3 z-20 bg-background/10 backdrop-blur-md">
       <nav className="flex items-center justify-between max-w-7xl w-full mx-auto">
@@ -25,6 +30,16 @@ const Navbar = () => {
           <Social />
           <div className="shrink-0 bg-border w-[1px] h-7"></div>
           <ThemeToggle />
+          <div className="shrink-0 bg-border w-[1px] h-7"></div>
+          <div>
+            {status === "authenticated" ? (
+              <UserLogged />
+            ) : (
+              <Button>
+                <Link href="/login">Login</Link>
+              </Button>
+            )}
+          </div>
         </div>
 
         <Dialog>

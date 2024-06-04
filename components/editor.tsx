@@ -1,17 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import EditorMenuBar from "./editor-menu-bar";
-import { Button } from "./ui/button";
 import Link from "@tiptap/extension-link";
 import CodeBlock from "@tiptap/extension-code-block";
 import Image from "@tiptap/extension-image";
 
-const Editor = () => {
-  const [editorState, setEditorState] = useState("<p>Hello World! 🌎️</p>");
-
+const Editor = ({
+  content,
+  onChange,
+}: {
+  content: string;
+  onChange: (richtext: string) => void;
+}) => {
   const editor = useEditor({
     autofocus: true,
     extensions: [
@@ -24,21 +26,25 @@ const Editor = () => {
       Image,
     ],
     onUpdate: ({ editor }) => {
-      setEditorState(editor.getHTML());
+      onChange(editor.getHTML());
     },
-    content: editorState,
+    content: content,
+    editorProps: {
+      attributes: {
+        class: "rounded-md border border-input w-full outline-none p-2",
+      },
+    },
   });
 
   return (
-    <>
-      <div className="flex items-center justify-between gap-2">
+    <div className="flex-1 w-full">
+      <div className="flex items-center justify-between gap-2 mb-4">
         {editor && <EditorMenuBar editor={editor} />}
-        <Button>Saved</Button>
       </div>
-      <div className="prose dark:prose-invert">
+      <div className="prose dark:prose-invert max-w-full flex-1">
         <EditorContent editor={editor} />
       </div>
-    </>
+    </div>
   );
 };
 

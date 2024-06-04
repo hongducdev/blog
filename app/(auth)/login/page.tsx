@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,6 +13,13 @@ import Github from "@/components/icons/Github";
 import { signIn } from "next-auth/react";
 
 const LoginPage = () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSignIn = () => {
+    setLoading(true);
+    signIn("github", { callbackUrl: "/" });
+  };
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <Card className="mx-auto max-w-sm">
@@ -25,12 +33,17 @@ const LoginPage = () => {
           <Button
             variant="outline"
             className="w-full flex items-center space-x-3"
-            onClick={() => {
-              signIn("github");
-            }}
+            onClick={handleSignIn}
+            disabled={loading}
           >
-            <Github />
-            <span>Sign up with GitHub</span>
+            {loading ? (
+              <span>Loading...</span>
+            ) : (
+              <>
+                <Github />
+                <span>Sign up with GitHub</span>
+              </>
+            )}
           </Button>
         </CardContent>
       </Card>

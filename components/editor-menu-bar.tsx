@@ -18,26 +18,13 @@ import {
   Image as ImageIcon,
   Link as LinkIcon,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import TiptapLink from "./tiptap-link";
 
 interface EditorMenuBarProps {
   editor: Editor | null;
 }
 
 const EditorMenuBar = ({ editor }: EditorMenuBarProps) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [linkUrl, setLinkUrl] = useState("");
-
   const addImage = useCallback(() => {
     if (!editor) return;
     const url = window.prompt("Enter image URL");
@@ -46,38 +33,12 @@ const EditorMenuBar = ({ editor }: EditorMenuBarProps) => {
     }
   }, [editor]);
 
-  const openLinkDialog = useCallback(() => {
-    if (!editor) return;
-    const previousUrl = editor.getAttributes("link").href;
-    setLinkUrl(previousUrl || "");
-    setIsDialogOpen(true);
-  }, [editor]);
-
-  const handleLinkSave = useCallback(() => {
-    if (!editor) return;
-
-    // empty
-    if (linkUrl === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-    } else {
-      // update link
-      editor
-        .chain()
-        .focus()
-        .extendMarkRange("link")
-        .setLink({ href: linkUrl })
-        .run();
-    }
-
-    setIsDialogOpen(false);
-  }, [editor, linkUrl]);
-
   if (!editor) {
     return null;
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 border border-input rounded-lg w-full flex-1">
       <Button
         variant="ghost"
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -109,14 +70,6 @@ const EditorMenuBar = ({ editor }: EditorMenuBarProps) => {
         }`}
       >
         <Strikethrough className="w-6 h-6" />
-      </Button>
-
-      <Button
-        variant="ghost"
-        onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editor.can().chain().focus().undo().run()}
-      >
-        <Undo className="w-6 h-6" />
       </Button>
 
       <Button
@@ -199,43 +152,7 @@ const EditorMenuBar = ({ editor }: EditorMenuBarProps) => {
         <ImageIcon className="w-6 h-6" />
       </Button>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger asChild>
-          <Button
-            variant="ghost"
-            className={
-              editor.isActive("link")
-                ? "bg-primary text-primary-foreground"
-                : ""
-            }
-            onClick={openLinkDialog}
-          >
-            <LinkIcon className="w-6 h-6" />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Link</DialogTitle>
-            <DialogDescription>Add a link to your text</DialogDescription>
-          </DialogHeader>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="link" className="text-right">
-              URL
-            </Label>
-            <Input
-              id="link"
-              type="url"
-              placeholder="https://example.com"
-              className="col-span-3"
-              value={linkUrl}
-              onChange={(e) => setLinkUrl(e.target.value)}
-            />
-          </div>
-          <DialogFooter>
-            <Button onClick={handleLinkSave}>Save changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <TiptapLink editor={editor} />
     </div>
   );
 };

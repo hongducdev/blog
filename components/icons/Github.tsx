@@ -1,4 +1,8 @@
-const Github = ({ className }: { className: string }) => {
+interface GithubProps {
+  className?: string;
+}
+
+const Github = ({ className }: GithubProps) => {
   return (
     <svg viewBox="0 0 438.549 438.549" className={`h-6 w-6 ${className}`}>
       <path

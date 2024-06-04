@@ -293,51 +293,6 @@
     font-family: "Roboto Mono", monospace;
   }
 
-  /* Additional styles for syntax highlighting */
-  .hljs {
-    background: #2d2d2d; /* Ensure the background matches your theme */
-    color: #f8f8f2; /* Default text color */
-    padding: 0.5em;
-    border-radius: 0.3em;
-    overflow-x: auto;
-  }
-
-  .hljs-keyword,
-  .hljs-selector-tag,
-  .hljs-literal,
-  .hljs-section,
-  .hljs-link {
-    color: #ff79c6;
-  }
-
-  .hljs-function,
-  .hljs-title,
-  .hljs-name {
-    color: #50fa7b;
-  }
-
-  .hljs-variable,
-  .hljs-params {
-    color: #f1fa8c;
-  }
-
-  .hljs-string,
-  .hljs-type,
-  .hljs-built_in,
-  .hljs-builtin-name,
-  .hljs-symbol,
-  .hljs-bullet,
-  .hljs-addition,
-  .hljs-link {
-    color: #bd93f9;
-  }
-
-  .hljs-comment,
-  .hljs-quote,
-  .hljs-deletion {
-    color: #6272a4;
-  }
-
   /* Custom scroll bar */
   /* width */
   ::-webkit-scrollbar {

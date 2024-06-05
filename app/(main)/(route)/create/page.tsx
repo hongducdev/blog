@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
+import slugify from "slugify";
 import Editor from "@/components/editor";
 import UploadImage from "@/components/upload-image";
 import {
@@ -18,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import IconPicker from "@/components/icon-picker";
 import { Smile } from "lucide-react";
 import TagPicker from "@/components/tag-picker";
+import { Badge } from "@/components/ui/badge";
 
 const formSchema = z.object({
   thumbnail: z.string().url({
@@ -26,11 +29,14 @@ const formSchema = z.object({
   title: z.string().min(5, {
     message: "Title must be at least 5 characters.",
   }),
+  slug: z.string().min(5, {
+    message: "Slug must be at least 5 characters.",
+  }),
   icon: z.string().min(1, {
     message: "Icon must be at least 1 character.",
   }),
-  tags: z.string().min(2, {
-    message: "Tags must be at least 2 characters.",
+  tags: z.array(z.string()).min(1, {
+    message: "At least one tag is required.",
   }),
   content: z.string().min(10, {
     message: "Content must be at least 10 characters.",
@@ -38,10 +44,40 @@ const formSchema = z.object({
 });
 
 const CreatePage = () => {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
+    defaultValues: {
+      tags: [],
+    },
   });
+
+  const generateSlug = (title: string) => {
+    return slugify(title, {
+      replacement: "-",
+      locale: "vi",
+      lower: true,
+      strict: false,
+      trim: true,
+    });
+  };
+
+  const title = useWatch({
+    control: form.control,
+    name: "title",
+  });
+
+  useEffect(() => {
+    if (title) {
+      form.setValue("slug", generateSlug(title));
+    }
+  }, [title, form]);
+
+  useEffect(() => {
+    form.setValue("tags", selectedTags);
+  }, [selectedTags, form]);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
@@ -50,7 +86,6 @@ const CreatePage = () => {
   return (
     <div className="px-2 py-10 flex gap-2 max-w-7xl mx-auto">
       <div className="w-[70%]">
-        <TagPicker />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -98,6 +133,33 @@ const CreatePage = () => {
                   <FormControl>
                     <Input placeholder="Title" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Slug</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Slug" {...field} disabled />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tags</FormLabel>
+                  <TagPicker
+                    selectedTags={selectedTags}
+                    onTagsChange={setSelectedTags}
+                  />
                   <FormMessage />
                 </FormItem>
               )}

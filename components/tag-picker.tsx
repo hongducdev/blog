@@ -65,8 +65,15 @@ const TagPicker = ({ selectedTags, onTagsChange }: TagPickerProps) => {
       <Popover>
         <PopoverTrigger asChild>
           <Input
+            type="text"
             value={inputValue}
             onChange={handleInputChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && inputValue) {
+                handleCreateNewTag();
+                e.preventDefault(); // Prevent form submission on Enter
+              }
+            }}
             placeholder="Enter tag"
           />
         </PopoverTrigger>

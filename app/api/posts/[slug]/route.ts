@@ -1,21 +1,31 @@
-import NotionService from "@/services/notion-service";
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prismadb";
 
-const notionService = new NotionService();
-
-export async function GET(request: Request, context: any) {
-  const { slug } = context.params;
+export async function GET(
+  request: NextRequest,
+  {params}: { params: { slug: string } }
+) {
+  const slug = params.slug;
 
   if (!slug) {
     return NextResponse.json({ error: "Slug is required" }, { status: 400 });
   }
 
   try {
-    const postPage = await notionService.getSingleBlogPost(slug);
+    const postPage = await prisma.post.findUnique({
+      where: {
+        slug: slug,
+      },
+    });
+
+    if (!postPage) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
     return NextResponse.json(postPage);
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";
-    return NextResponse.json({ error: errorMessage }, { status: 404 });
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

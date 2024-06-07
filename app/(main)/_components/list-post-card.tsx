@@ -1,25 +1,25 @@
 import Image from "next/image";
-import { BlogPost } from "@/@types/schema";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
+import { Post } from "@prisma/client";
 
 interface ListPostCardProps {
-  posts: BlogPost[];
+  posts: Post[];
 }
 
 const ListPostCard = ({ posts }: ListPostCardProps) => {
   return (
     <>
       <BentoGrid>
-        {posts.map((post: BlogPost, i: number) => (
+        {posts.map((post: Post, i: number) => (
           <BentoGridItem
             key={post.slug}
             header={
-              post.cover === "" ? (
+              post.thumbnail === "" ? (
                 <Skeleton />
               ) : (
                 <div className="relative h-full w-full">
                   <Image
-                    src={post.cover}
+                    src={post.thumbnail}
                     alt={post.title}
                     layout="fill"
                     className="object-cover rounded-xl"
@@ -28,9 +28,9 @@ const ListPostCard = ({ posts }: ListPostCardProps) => {
               )
             }
             title={post.title}
-            description={post.description}
+            shortDesc={post.shortDesc}
             link={`/blog/${post.slug}`}
-            tags={post.tags}
+            tag={post.tagName}
             icon={
               post.icon && post.icon.startsWith("http") ? (
                 <Image

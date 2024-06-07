@@ -10,6 +10,7 @@ import { CalendarClock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getPublishedPosts, getSingleBlogPost } from "@/apis";
 import NavPageDetail from "@/app/(main)/_components/nav-page-detail";
+import { Post } from "@prisma/client";
 
 export const revalidate = 60;
 
@@ -35,15 +36,15 @@ export const generateMetadata = async ({
   params,
 }: BlogPageProps): Promise<Metadata> => {
   try {
-    const postPage: PostPage = await getSingleBlogPost(params.slug);
+    const postPage: Post = await getSingleBlogPost(params.slug);
     return {
-      title: postPage.post.title,
-      description: postPage.post.description,
+      title: postPage.title,
+      description: postPage.shortDesc,
       openGraph: {
         images: [
           {
-            url: postPage.post.cover,
-            alt: postPage.post.title,
+            url: postPage.thumbnail,
+            alt: postPage.title,
           },
         ],
       },
@@ -60,14 +61,15 @@ export const generateMetadata = async ({
 const BlogPage = async ({ params }: BlogPageProps) => {
   try {
     const postPage = await getSingleBlogPost(params.slug);
+    console.log("🚀 ~ BlogPage ~ postPage:", postPage)
 
     return (
       <div className="flex flex-col gap-5">
         <div className="relative">
           <div className="relative h-[40vh] w-full">
             <Image
-              src={postPage.post.cover}
-              alt={postPage.post.title}
+              src={postPage.thumbnail}
+              alt={postPage.title}
               fill
               className="object-cover"
             />
@@ -76,32 +78,23 @@ const BlogPage = async ({ params }: BlogPageProps) => {
           <div className="absolute inset-0 flex items-center">
             <div className="max-w-7xl w-full px-4 mx-auto text-white">
               <h1 className="text-2xl lg:text-5xl font-bold">
-                {postPage.post.title}
+                {postPage.title}
               </h1>
-              <p className="text-sm lg:text-lg mt-4">
-                {postPage.post.description}
-              </p>
+              <p className="text-sm lg:text-lg mt-4">{postPage.description}</p>
               <div className="flex items-center gap-2 mt-4 text-sm lg:text-lg">
                 <CalendarClock className="w-5 h-5" />
                 <span>
                   Updated on{" "}
-                  {moment(postPage.post.date).format("MMMM Do, YYYY")}
+                  {moment(postPage.updatedAt).format("MMMM Do, YYYY")}
                 </span>
               </div>
               <div className="mt-4">
-                {postPage.post.tags && (
-                  <div className="flex flex-wrap my-2 space-x-2">
-                    {postPage.post.tags.map((tag: Tag) => (
-                      <Badge
-                        key={tag.id}
-                        variant="secondary"
-                        href={`${process.env.BASE_URL}/tag/${tag.name}`}
-                      >
-                        #{tag.name}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+                <Badge
+                  variant="secondary"
+                  href={`${process.env.BASE_URL}/tag/${postPage.tagName}`}
+                >
+                  #{postPage.tagName}
+                </Badge>
               </div>
             </div>
           </div>
@@ -109,13 +102,13 @@ const BlogPage = async ({ params }: BlogPageProps) => {
         <section className="max-w-7xl w-full mx-auto px-2 lg:px-0">
           <div className="py-5">
             <NavPageDetail
-              title={postPage.post.title}
-              link={`${process.env.BASE_URL}/blog/${postPage.post.slug}`}
+              title={postPage.title}
+              link={`${process.env.BASE_URL}/blog/${postPage.slug}`}
             />
           </div>
           <article className="prose dark:prose-invert max-w-7xl w-full mx-auto">
             <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-              {postPage.markdown}
+              {postPage.content}
             </ReactMarkdown>
           </article>
         </section>

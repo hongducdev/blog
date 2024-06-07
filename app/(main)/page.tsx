@@ -34,9 +34,9 @@ const MainPage = async () => {
           <Badge
             key={tag.id}
             className="text-base"
-            href={`${process.env.BASE_URL}/tag/${tag.name}`}
+            href={`${process.env.BASE_URL}/tag/${tag.tagName}`}
           >
-            #{tag.name}
+            #{tag.tagName}
           </Badge>
         ))}
       </div>

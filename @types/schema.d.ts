@@ -1,7 +1,9 @@
 export type Tag = {
-  color: string;
   id: string;
-  name: string;
+  tagName: string;
+  postIDs: string[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type BlogPost = {

@@ -11,9 +11,9 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import { BlogPost } from "@/@types/schema";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Post } from "@prisma/client";
 
 const SearchCommand = () => {
   const router = useRouter();
@@ -49,7 +49,7 @@ const SearchCommand = () => {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup title="Posts">
-            {posts.map((post: BlogPost) => (
+            {posts.map((post: Post) => (
               <CommandItem
                 key={post.slug}
                 title={post.title}
@@ -61,7 +61,7 @@ const SearchCommand = () => {
               >
                 <div className="flex items-center space-x-3">
                   <Image
-                    src={post.cover}
+                    src={post.thumbnail}
                     alt={post.title}
                     width={70}
                     height={20}
@@ -69,7 +69,7 @@ const SearchCommand = () => {
                   />
                   <div>
                     <span className="font-semibold text-lg">{post.title}</span>
-                    <p className="text-xs line-clamp-1">{post.description}</p>
+                    <p className="text-xs line-clamp-1">{post.shortDesc}</p>
                   </div>
                 </div>
               </CommandItem>

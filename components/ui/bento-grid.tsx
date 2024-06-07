@@ -25,20 +25,21 @@ export const BentoGrid = ({
 export const BentoGridItem = ({
   className,
   title,
-  description,
   header,
   icon,
   link,
-  tags,
+  tag,
+  shortDesc,
 }: {
   className?: string;
   title?: string | React.ReactNode;
-  description?: string | React.ReactNode;
   header?: React.ReactNode;
   icon?: React.ReactNode;
   link?: string;
-  tags?: Tag[];
+  tag?: string
+  shortDesc?: string;
 }) => {
+
   return (
     <div
       className={cn(
@@ -63,20 +64,11 @@ export const BentoGridItem = ({
           )}
         </div>
         <div className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300 line-clamp-1">
-          {description}
+          {shortDesc}
         </div>
-        {tags && (
-          <div className="flex flex-wrap my-2 space-x-2">
-            {tags.map((tag) => (
-              <Badge
-                key={tag.id}
-                href={`${process.env.BASE_URL}/tag/${tag.name}`}
-              >
-                #{tag.name}
-              </Badge>
-            ))}
-          </div>
-        )}
+        <Badge href={`${process.env.BASE_URL}/tag/${tag}`}>
+          #{tag}
+        </Badge>
       </div>
     </div>
   );

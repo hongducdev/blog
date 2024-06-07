@@ -15,11 +15,29 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import IconPicker from "@/components/icon-picker";
-import { Smile } from "lucide-react";
-import TagPicker from "@/components/tag-picker";
+import { Check, ChevronsUpDown, Smile } from "lucide-react";
+import axios from "axios";
+import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
+import { Tag } from "@prisma/client";
 
 const formSchema = z.object({
   thumbnail: z.string().url({
@@ -34,24 +52,35 @@ const formSchema = z.object({
   icon: z.string().min(1, {
     message: "Icon must be at least 1 character.",
   }),
-  tags: z.array(z.string()).min(1, {
-    message: "At least one tag is required.",
+  shortDesc: z.string().min(10, {
+    message: "Short description must be at least 10 characters.",
   }),
+  tag: z.string().nullable(),
   content: z.string().min(10, {
     message: "Content must be at least 10 characters.",
   }),
 });
 
 const CreatePost = () => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [tags, setTags] = useState<Tag[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
-    defaultValues: {
-      tags: [],
-    },
   });
+
+  useEffect(() => {
+    const getAllTags = async () => {
+      try {
+        const response = await axios.get("/api/tags");
+        setTags(response.data || []);
+      } catch (error) {
+        console.error("Failed to fetch tags:", error);
+      }
+    };
+    getAllTags();
+  }, []);
 
   const generateSlug = (title: string) => {
     return slugify(title, {
@@ -74,12 +103,43 @@ const CreatePost = () => {
     }
   }, [title, form]);
 
-  useEffect(() => {
-    form.setValue("tags", selectedTags);
-  }, [selectedTags, form]);
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
+    setIsLoading(true);
+    try {
+      // Find the selected tag object
+      const selectedTag = tags.find((tag) => tag.tagName === values.tag);
+
+      await axios.post("/api/posts", {
+        ...values,
+        tag: selectedTag ? { connect: { id: selectedTag.id } } : undefined,
+      });
+
+      toast({
+        title: "Success!",
+        description: "Your post has been created.",
+      });
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        toast({
+          title: "Request failed",
+          description: error.response?.data?.error || error.message,
+        });
+      } else if (error instanceof Error) {
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: error.message,
+        });
+      } else {
+        // Fallback for unknown error type
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "An unknown error occurred.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -151,14 +211,72 @@ const CreatePost = () => {
             />
             <FormField
               control={form.control}
-              name="tags"
+              name="tag"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Tag</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? tags.find((tag) => tag.tagName === field.value)
+                                ?.tagName
+                            : "Select tag"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command className="w-full">
+                        <CommandInput placeholder="Search tag..." />
+                        <CommandList>
+                          <CommandEmpty>No tag found.</CommandEmpty>
+                          <CommandGroup>
+                            {tags.map((tag) => (
+                              <CommandItem
+                                value={tag.tagName}
+                                key={tag.id}
+                                onSelect={() => {
+                                  form.setValue("tag", tag.tagName);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    tag.tagName === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {tag.tagName}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="shortDesc"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tags</FormLabel>
-                  <TagPicker
-                    selectedTags={selectedTags}
-                    onTagsChange={setSelectedTags}
-                  />
+                  <FormLabel>Short description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Short description" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -176,7 +294,9 @@ const CreatePost = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Submitting..." : "Submit"}
+            </Button>
           </form>
         </Form>
       </div>

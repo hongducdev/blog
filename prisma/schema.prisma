@@ -48,6 +48,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model VerificationToken {
@@ -59,3 +61,23 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Post {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  shortDesc   String
+  content     String
+  icon        String
+  thumbnail   String
+  tagName     String?
+  tag         Tag?      @relation(fields: [tagName], references: [tagName])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  slug        String    @unique
+}
+
+model Tag {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  tagName String   @unique
+  posts   Post[]
+  postIDs String[] @db.ObjectId
+}

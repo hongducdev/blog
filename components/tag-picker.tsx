@@ -1,122 +1,63 @@
-"use client";
-import { useState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "./ui/button";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const initialTags = ["Windows", "Linux", "OS", "Terminal"];
-
-interface TagPickerProps {
-  selectedTags: string[];
-  onTagsChange: (tags: string[]) => void;
-}
-
-const TagPicker = ({ selectedTags, onTagsChange }: TagPickerProps) => {
-  const [tags, setTags] = useState<string[]>(initialTags);
-  const [inputValue, setInputValue] = useState("");
-  const [showPopover, setShowPopover] = useState(false);
-
-  useEffect(() => {
-    setShowPopover(inputValue.length > 0);
-  }, [inputValue]);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setInputValue(value);
-  };
-
-  const handleTagClick = (tag: string) => {
-    if (!selectedTags.includes(tag)) {
-      const newSelectedTags = [...selectedTags, tag];
-      onTagsChange(newSelectedTags);
-      setInputValue("");
-      setShowPopover(false);
-    }
-  };
-
-  const handleCreateNewTag = () => {
-    if (inputValue && !tags.includes(inputValue)) {
-      const newTags = [...tags, inputValue];
-      setTags(newTags);
-      const newSelectedTags = [...selectedTags, inputValue];
-      onTagsChange(newSelectedTags);
-      setInputValue("");
-      setShowPopover(false);
-    }
-  };
-
-  const handleRemoveTag = (tag: string) => {
-    const newSelectedTags = selectedTags.filter((t) => t !== tag);
-    onTagsChange(newSelectedTags);
-  };
-
-  const filteredTags = tags.filter(
-    (tag) =>
-      tag.toLowerCase().includes(inputValue.toLowerCase()) &&
-      !selectedTags.includes(tag)
-  );
-
+const TagPicker = () => {
   return (
-    <div className="relative">
-      <Popover>
-        <PopoverTrigger asChild>
-          <Input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && inputValue) {
-                handleCreateNewTag();
-                e.preventDefault(); // Prevent form submission on Enter
-              }
-            }}
-            placeholder="Enter tag"
-          />
-        </PopoverTrigger>
-        <PopoverContent>
-          {filteredTags.length > 0 ? (
-            <ul>
-              {filteredTags.map((tag) => (
-                <li
-                  key={tag}
-                  className="cursor-pointer"
-                  onClick={() => handleTagClick(tag)}
-                >
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            inputValue && (
-              <div className="cursor-pointer" onClick={handleCreateNewTag}>
-                Create new tag: <Badge>{inputValue}</Badge>
-              </div>
-            )
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          className={cn(
+            "w-full justify-between",
+            !field.value && "text-muted-foreground"
           )}
-        </PopoverContent>
-      </Popover>
-      <div className="mt-2 flex items-center gap-3">
-        {selectedTags.map((tag) => (
-          <Badge
-            key={tag}
-            className="inline-flex items-center gap-2"
-            variant="secondary"
-          >
-            {tag}
-            <button
-              onClick={() => handleRemoveTag(tag)}
-              className="ml-1 text-red-500"
-            >
-              &times;
-            </button>
-          </Badge>
-        ))}
-      </div>
-    </div>
+        >
+          {field.value
+            ? tags.find((tag) => tag.tagName === field.value)?.tagName
+            : "Select tag"}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <CommandInput placeholder="Search tag..." />
+          <CommandEmpty>No tag found.</CommandEmpty>
+          <CommandGroup>
+            {tags.map((tag) => (
+              <CommandItem
+                value={tag.tagName}
+                key={tag.tagName}
+                onSelect={() => {
+                  form.setValue("tag", tag.tagName);
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    tag.tagName === field.value ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {tag.tagName}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 };
 

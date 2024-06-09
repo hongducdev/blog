@@ -21,7 +21,7 @@ const Navbar = () => {
   const { status } = useSession();
 
   return (
-    <div className="sticky top-0 p-3 z-20 bg-background/10 backdrop-blur-md">
+    <div className="sticky top-0 p-3 z-50 bg-background/10 backdrop-blur-md">
       <nav className="flex items-center justify-between max-w-7xl w-full mx-auto">
         <Logo />
         <div className="hidden lg:flex items-center space-x-5">

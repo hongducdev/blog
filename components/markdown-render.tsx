@@ -70,7 +70,7 @@ export default function MarkdownRender({ mdString }: MarkdownRenderProps) {
           return (
             <div className="relative overflow-x-hidden">
               <button
-                className="tooltip tooltip-left absolute z-40 mr-2 mt-5 p-1 rounded-lg bg-base-content/40 text-xs text-base-300 right-0"
+                className="tooltip tooltip-left absolute z-20 mr-2 mt-5 p-1 rounded-lg bg-base-content/40 text-xs text-base-300 right-0"
                 data-tip={copyTip}
               >
                 <CopyToClipboard
@@ -89,7 +89,7 @@ export default function MarkdownRender({ mdString }: MarkdownRenderProps) {
                   bottom: 0,
                   right: 0,
                 }}
-                className="absolute z-40 mb-5 mr-1 rounded-lg bg-base-content/40 p-1 text-xs text-base-300 backdrop-blur-sm"
+                className="absolute z-20 mb-5 mr-1 rounded-lg bg-base-content/40 p-1 text-xs text-base-300 backdrop-blur-sm"
               >
                 {language}
               </span>

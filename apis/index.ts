@@ -21,7 +21,7 @@ export const getTags = async () => {
   return response.data;
 }
 
-export const getPostsByTag = async (tagName: string) => {
-  const response = await axios.get(`${baseURL}/api/tags/${tagName}`);
-  return response.data;
-};
+// export const getPostsByTag = async (tagName: string) => {
+//   const response = await axios.get(`${baseURL}/api/tags/${tagName}`);
+//   return response.data;
+// };

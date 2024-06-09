@@ -18,7 +18,7 @@ import { Post } from "@prisma/client";
 const SearchCommand = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     const fetchPosts = async () => {

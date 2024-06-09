@@ -8,14 +8,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const postsEntries = posts.map((post: Post) => ({
     url: `${process.env.BASE_URL}/post/${post.slug}`,
-    lastModified: post.updatedAt.toISOString(),
+    lastModified: post.updatedAt,
     changeFrequency: "weekly",
     priority: 0.8,
   }));
 
   const tagsEntries = tags.map((tag: Tag) => ({
     url: `${process.env.BASE_URL}/tag/${tag.tagName}`,
-    lastModified: new Date().toISOString(),
+    lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.5,
   }));
@@ -23,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     {
       url: `${process.env.BASE_URL}`,
-      lastModified: new Date().toISOString(),
+      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },

@@ -1,4 +1,3 @@
-// import { BlogPost, Tag } from "@/@types/schema";
 // import { getPostsByTag, getTags } from "@/apis";
 // import ListPostCard from "@/app/(main)/_components/list-post-card";
 // import { Badge } from "@/components/ui/badge";

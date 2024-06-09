@@ -1,7 +1,7 @@
-import { Tag } from "@/@types/schema";
 import { getPublishedPosts, getTags } from "@/apis";
 import { Badge } from "@/components/ui/badge";
 import ListPostCard from "./_components/list-post-card";
+import { Tag } from "@prisma/client";
 
 export const revalidate = 60;
 

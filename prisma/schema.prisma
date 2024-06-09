@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -48,6 +42,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  comments      Comment[] // Add this line
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -70,6 +65,7 @@ model Post {
   thumbnail   String
   tagName     String?
   tag         Tag?      @relation(fields: [tagName], references: [tagName])
+  comments    Comment[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   slug        String    @unique
@@ -78,6 +74,16 @@ model Post {
 model Tag {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   tagName String   @unique
-  posts   Post[]  
-  postIDs String[] @db.ObjectId
+  posts   Post[]
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String   @db.ObjectId
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String?  @db.ObjectId
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

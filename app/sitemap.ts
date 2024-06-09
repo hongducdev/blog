@@ -1,20 +1,20 @@
 import { MetadataRoute } from "next";
 import { getPublishedPosts, getTags } from "@/apis";
-import { BlogPost, Tag } from "@/@types/schema";
+import { Post, Tag } from "@prisma/client";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getPublishedPosts();
   const tags = await getTags();
 
-  const postsEntries = posts.map((post: BlogPost) => ({
+  const postsEntries = posts.map((post: Post) => ({
     url: `${process.env.BASE_URL}/post/${post.slug}`,
-    lastModified: post.date,
+    lastModified: post.updatedAt.toISOString(),
     changeFrequency: "weekly",
     priority: 0.8,
   }));
 
   const tagsEntries = tags.map((tag: Tag) => ({
-    url: `${process.env.BASE_URL}/tag/${tag.name}`,
+    url: `${process.env.BASE_URL}/tag/${tag.tagName}`,
     lastModified: new Date().toISOString(),
     changeFrequency: "weekly",
     priority: 0.5,

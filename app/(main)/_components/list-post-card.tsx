@@ -9,44 +9,50 @@ interface ListPostCardProps {
 const ListPostCard = ({ posts }: ListPostCardProps) => {
   return (
     <>
-      <BentoGrid>
-        {posts.map((post: Post, i: number) => (
-          <BentoGridItem
-            key={post.slug}
-            header={
-              post.thumbnail === "" ? (
-                <Skeleton />
-              ) : (
-                <div className="relative h-full w-full">
+      {posts.length > 0 ? (
+        <BentoGrid>
+          {posts.map((post: Post, i: number) => (
+            <BentoGridItem
+              key={post.slug}
+              header={
+                post.thumbnail === "" ? (
+                  <Skeleton />
+                ) : (
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={post.thumbnail}
+                      alt={post.title}
+                      layout="fill"
+                      className="object-cover rounded-xl"
+                    />
+                  </div>
+                )
+              }
+              title={post.title}
+              shortDesc={post.shortDesc}
+              link={`/blog/${post.slug}`}
+              tag={post.tagName}
+              icon={
+                post.icon && post.icon.startsWith("http") ? (
                   <Image
-                    src={post.thumbnail}
+                    src={post.icon}
                     alt={post.title}
-                    layout="fill"
-                    className="object-cover rounded-xl"
+                    width={20}
+                    height={20}
                   />
-                </div>
-              )
-            }
-            title={post.title}
-            shortDesc={post.shortDesc}
-            link={`/blog/${post.slug}`}
-            tag={post.tagName}
-            icon={
-              post.icon && post.icon.startsWith("http") ? (
-                <Image
-                  src={post.icon}
-                  alt={post.title}
-                  width={20}
-                  height={20}
-                />
-              ) : (
-                <span>{post.icon}</span>
-              )
-            }
-            className={i === 3 || i === 6 ? "md:col-span-2" : ""}
-          />
-        ))}
-      </BentoGrid>
+                ) : (
+                  <span>{post.icon}</span>
+                )
+              }
+              className={i === 3 || i === 6 ? "md:col-span-2" : ""}
+            />
+          ))}
+        </BentoGrid>
+      ) : (
+        <div className="">
+          <h1 className="text-2xl font-bold text-center">No posts found</h1>
+        </div>
+      )}
     </>
   );
 };

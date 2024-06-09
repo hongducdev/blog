@@ -293,6 +293,22 @@
     font-family: "Roboto Mono", monospace;
   }
 
+  .prose pre,
+  .prose code {
+    /* Remove default typography plugin styles */
+    @apply bg-transparent p-0 m-0 border-0 shadow-none;
+  }
+
+  /* Add your custom styles */
+  .custom-code pre,
+  .custom-code code {
+    background-color: #2d2d2d; /* Example background color */
+    color: #f8f8f2; /* Example text color */
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+  }
+
   /* Custom scroll bar */
   /* width */
   ::-webkit-scrollbar {

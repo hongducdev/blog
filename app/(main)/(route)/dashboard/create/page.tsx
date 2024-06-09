@@ -5,7 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import slugify from "slugify";
-import Editor from "@/components/editor";
+import MDEditor from "@uiw/react-md-editor";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
 import UploadImage from "@/components/upload-image";
 import {
   Form,
@@ -119,6 +121,7 @@ const CreatePost = () => {
         title: "Success!",
         description: "Your post has been created.",
       });
+      form.reset();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         toast({
@@ -288,7 +291,11 @@ const CreatePost = () => {
                 <FormItem>
                   <FormLabel>Content</FormLabel>
                   <FormControl>
-                    <Editor content={field.value} onChange={field.onChange} />
+                    <MDEditor
+                      height={200}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

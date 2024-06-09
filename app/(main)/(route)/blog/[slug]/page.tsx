@@ -2,15 +2,13 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import moment from "moment";
-import { BlogPost, PostPage, Tag } from "@/@types/schema";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/base16/dracula.css";
 import { CalendarClock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getPublishedPosts, getSingleBlogPost } from "@/apis";
 import NavPageDetail from "@/app/(main)/_components/nav-page-detail";
 import { Post } from "@prisma/client";
+import CodeBlock from "@/components/code-block";
+import MarkdownRender from "@/components/markdown-render";
 
 export const revalidate = 60;
 
@@ -22,7 +20,7 @@ interface BlogPageProps {
 
 export const generateStaticParams = async () => {
   try {
-    const posts: BlogPost[] = await getPublishedPosts();
+    const posts: Post[] = await getPublishedPosts();
     return posts.map((post) => ({
       slug: post.slug,
     }));
@@ -36,7 +34,7 @@ export const generateMetadata = async ({
   params,
 }: BlogPageProps): Promise<Metadata> => {
   try {
-    const postPage: Post = await getSingleBlogPost(params.slug);
+    const postPage = await getSingleBlogPost(params.slug);
     return {
       title: postPage.title,
       description: postPage.shortDesc,
@@ -61,7 +59,6 @@ export const generateMetadata = async ({
 const BlogPage = async ({ params }: BlogPageProps) => {
   try {
     const postPage = await getSingleBlogPost(params.slug);
-    console.log("🚀 ~ BlogPage ~ postPage:", postPage)
 
     return (
       <div className="flex flex-col gap-5">
@@ -80,7 +77,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
               <h1 className="text-2xl lg:text-5xl font-bold">
                 {postPage.title}
               </h1>
-              <p className="text-sm lg:text-lg mt-4">{postPage.description}</p>
+              <p className="text-sm lg:text-lg mt-4">{postPage.shortDesc}</p>
               <div className="flex items-center gap-2 mt-4 text-sm lg:text-lg">
                 <CalendarClock className="w-5 h-5" />
                 <span>
@@ -107,9 +104,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
             />
           </div>
           <article className="prose dark:prose-invert max-w-7xl w-full mx-auto">
-            <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-              {postPage.content}
-            </ReactMarkdown>
+            <MarkdownRender mdString={postPage.content} />
           </article>
         </section>
       </div>

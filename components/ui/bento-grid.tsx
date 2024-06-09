@@ -66,9 +66,11 @@ export const BentoGridItem = ({
         <div className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300 line-clamp-1">
           {shortDesc}
         </div>
-        <Badge href={`${process.env.BASE_URL}/tag/${tag}`}>
-          #{tag}
-        </Badge>
+        <div className="mt-1">
+          <Badge href={`${process.env.BASE_URL}/tag/${tag}`}>
+            #{tag}
+          </Badge>
+        </div>
       </div>
     </div>
   );

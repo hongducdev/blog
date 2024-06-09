@@ -56,8 +56,14 @@ const fetchTags = async () => {
 const TagPage = async ({ params }: TagPageProps) => {
   try {
     const tags = await fetchTags();
+    if (!tags || tags.length === 0) {
+      notFound();
+    }
 
     const posts: Post[] = await getPostsByTag(params.tagName);
+    if (!posts || posts.length === 0) {
+      notFound();
+    }
 
     return (
       <div className="max-w-7xl mx-auto px-2 lg:px-0">

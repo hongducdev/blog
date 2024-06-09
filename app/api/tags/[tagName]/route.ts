@@ -16,6 +16,9 @@ export async function GET(
       where: {
         tagName: tagName,
       },
+      include: {
+        posts: true,
+      },
     });
 
     if (!tag) {

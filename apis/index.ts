@@ -23,5 +23,5 @@ export const getTags = async () => {
 
 export const getPostsByTag = async (tagName: string) => {
   const response = await axios.get(`${baseURL}/api/tags/${tagName}`);
-  return response.data;
+  return response.data.posts;
 };

@@ -78,6 +78,6 @@ model Post {
 model Tag {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   tagName String   @unique
-  posts   Post[]
+  posts   Post[]  
   postIDs String[] @db.ObjectId
 }

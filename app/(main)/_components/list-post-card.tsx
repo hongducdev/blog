@@ -31,7 +31,7 @@ const ListPostCard = ({ posts }: ListPostCardProps) => {
               title={post.title}
               shortDesc={post.shortDesc}
               link={`/blog/${post.slug}`}
-              tag={post.tagName}
+              tag={post.tagName ?? " "}
               icon={
                 post.icon && post.icon.startsWith("http") ? (
                   <Image

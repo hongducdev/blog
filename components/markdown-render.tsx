@@ -1,7 +1,7 @@
 "use client";
 import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { darcula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 import tsx from "react-syntax-highlighter/dist/cjs/languages/prism/tsx";
 import typescript from "react-syntax-highlighter/dist/cjs/languages/prism/typescript";
@@ -28,15 +28,21 @@ interface MarkdownRenderProps {
   mdString: string;
 }
 
+type CodeProps = {
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+};
+
 export default function MarkdownRender({ mdString }: MarkdownRenderProps) {
   return (
     <ReactMarkdown
       components={{
-        code({ inline, className, ...props }) {
+        code({ inline, className, ...props }: CodeProps) {
           const hasLang = /language-(\w+)/.exec(className || "");
           return !inline && hasLang ? (
             <SyntaxHighlighter
-              style={oneDark}
+              style={darcula}
               language={hasLang[1]}
               PreTag="div"
               className="mockup-code scrollbar-thin scrollbar-track-base-content/5 scrollbar-thumb-base-content/40 scrollbar-track-rounded-md scrollbar-thumb-rounded"

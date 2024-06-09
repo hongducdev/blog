@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { getPublishedPosts, getSingleBlogPost } from "@/apis";
 import NavPageDetail from "@/app/(main)/_components/nav-page-detail";
 import { Post } from "@prisma/client";
-import CodeBlock from "@/components/code-block";
 import MarkdownRender from "@/components/markdown-render";
 
 export const revalidate = 60;

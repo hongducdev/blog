@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 
 const UserLogged = () => {
   const { data: session } = useSession();
+
   if (!session) return null;
 
   return (

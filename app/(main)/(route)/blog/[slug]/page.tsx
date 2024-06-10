@@ -8,6 +8,8 @@ import { getPublishedPosts, getSingleBlogPost } from "@/apis";
 import NavPageDetail from "@/app/(main)/_components/nav-page-detail";
 import { Post } from "@prisma/client";
 import MarkdownRender from "@/components/markdown-render";
+import CommentInput from "@/components/comment/comment-input";
+import CommentItem from "@/components/comment/comment-item";
 
 export const revalidate = 60;
 
@@ -106,6 +108,14 @@ const BlogPage = async ({ params }: BlogPageProps) => {
             <MarkdownRender mdString={postPage.content} />
           </article>
         </section>
+
+        <div className="max-w-7xl w-full mx-auto px-2 lg:px-0">
+          <h3 className="text-xl font-semibold">Comments</h3>
+          <div className="w-full h-[1px] bg-input"></div>
+          <div className="mt-4">
+            <CommentInput postId={postPage.id} slug={params.slug} />
+          </div>
+        </div>
       </div>
     );
   } catch (error) {

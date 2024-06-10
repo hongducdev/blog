@@ -16,6 +16,21 @@ export async function GET(
       where: {
         slug: slug,
       },
+      include: {
+        comments: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                image: true,
+              },
+            }
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      }
     });
 
     if (!postPage) {

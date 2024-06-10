@@ -15,12 +15,10 @@ export const POST = async (req: Request) => {
   const emailUser = session?.user?.email as string;
 
   if (!postId || !content) {
-    return {
-      status: 400,
-      body: {
-        error: "postId and content are required",
-      },
-    };
+    return NextResponse.json(
+      { error: "postId and content are required" },
+      { status: 400 }
+    );
   }
 
   // Create comment in database

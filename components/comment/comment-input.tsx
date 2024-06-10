@@ -77,63 +77,63 @@ const CommentInput = ({ postId, slug }: CommentInputProps) => {
     }
   };
 
-  if (!session) {
-    return (
-      <div className="text-center">
-        <p className="">
-          You need to be logged in to comment.{" "}
-          <Link href="/login" className="font-medium underline">
-            Login
-          </Link>
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div>
-      <div className="flex gap-2 items-start">
-        <Avatar>
-          <AvatarImage
-            src={session.user?.image || "https://github.com/shadcn.png"}
-          />
-          <AvatarFallback>
-            {session.user?.name?.charAt(0) || "?"}
-          </AvatarFallback>
-        </Avatar>
-        <div className="border border-input rounded-md w-full flex items-center">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex items-center w-full"
-            >
-              <FormField
-                control={form.control}
-                name="content"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Add a comment..."
-                        className="w-full border-none ring-0 ring-offset-0 outline-none focus:outline-none focus:ring-0 focus:ring-offset-0"
-                        type="text"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+      <div>
+        {session ? (
+          <div className="flex gap-2 items-start">
+            <Avatar>
+              <AvatarImage
+                src={session.user?.image || "https://github.com/shadcn.png"}
               />
-              <Button variant="ghost" type="submit">
-                {isLoading ? (
-                  <Loader className="w-5 h-5" />
-                ) : (
-                  <Send className="w-5 h-5" />
-                )}
-              </Button>
-            </form>
-          </Form>
-        </div>
+              <AvatarFallback>
+                {session.user?.name?.charAt(0) || "?"}
+              </AvatarFallback>
+            </Avatar>
+            <div className="border border-input rounded-md w-full flex items-center">
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="flex items-center w-full"
+                >
+                  <FormField
+                    control={form.control}
+                    name="content"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Add a comment..."
+                            className="w-full border-none ring-0 ring-offset-0 outline-none focus:outline-none focus:ring-0 focus:ring-offset-0"
+                            type="text"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button variant="ghost" type="submit">
+                    {isLoading ? (
+                      <Loader className="w-5 h-5" />
+                    ) : (
+                      <Send className="w-5 h-5" />
+                    )}
+                  </Button>
+                </form>
+              </Form>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center">
+            <p className="">
+              You need to be logged in to comment.{" "}
+              <Link href="/login" className="font-medium underline">
+                Login
+              </Link>
+            </p>
+          </div>
+        )}
       </div>
       <div className="mt-4 flex flex-col gap-3">
         {comments.map(

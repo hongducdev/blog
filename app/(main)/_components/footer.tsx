@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="border-y">
       <div className="max-w-7xl mx-auto flex flex-col items-center p-3 text-xs lg:text-sm">
         <span className="flex items-center gap-2">
-          Copyright ©{" "}
+          Bản quyền thuộc về ©{" "}
           <Link
             href="https://hongducdev.com/"
             className="text-green-500 hover:underline"

@@ -36,7 +36,7 @@ const Navbar = () => {
               <UserLogged />
             ) : (
               <Button>
-                <Link href="/login">Login</Link>
+                <Link href="/login">Đăng nhập</Link>
               </Button>
             )}
           </div>
@@ -52,7 +52,7 @@ const Navbar = () => {
             <DialogHeader>
               <DialogTitle>Hello!</DialogTitle>
               <DialogDescription>
-                Welcome to blog.hongducdev.com.
+                Chào mừng tới blog.hongducdev.com.
               </DialogDescription>
             </DialogHeader>
             <SearchCommand />

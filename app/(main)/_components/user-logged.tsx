@@ -30,7 +30,9 @@ const UserLogged = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          Tài khoản
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="flex flex-col px-2 py-1.5 ">
           <span className="text-sm font-medium">{session.user?.name}</span>
@@ -42,7 +44,9 @@ const UserLogged = () => {
         <DropdownMenuItem asChild>
           <Button onClick={() => signOut()} className="w-full">
             <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
+            <span>
+              Đăng xuất
+            </span>
           </Button>
         </DropdownMenuItem>
       </DropdownMenuContent>

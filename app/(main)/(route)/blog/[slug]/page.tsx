@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import moment from "moment";
+import "moment/locale/vi";
 import { CalendarClock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getPublishedPosts, getSingleBlogPost } from "@/apis";
@@ -9,7 +10,6 @@ import NavPageDetail from "@/app/(main)/_components/nav-page-detail";
 import { Post } from "@prisma/client";
 import MarkdownRender from "@/components/markdown-render";
 import CommentInput from "@/components/comment/comment-input";
-import CommentItem from "@/components/comment/comment-item";
 
 export const revalidate = 60;
 
@@ -82,8 +82,8 @@ const BlogPage = async ({ params }: BlogPageProps) => {
               <div className="flex items-center gap-2 mt-4 text-sm lg:text-lg">
                 <CalendarClock className="w-5 h-5" />
                 <span>
-                  Updated on{" "}
-                  {moment(postPage.updatedAt).format("MMMM Do, YYYY")}
+                  Cập nhật lần cuối:{" "}
+                  {moment(postPage.updatedAt).format('DD [tháng] MM, YYYY')}
                 </span>
               </div>
               <div className="mt-4">
@@ -110,7 +110,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
         </section>
 
         <div className="max-w-7xl w-full mx-auto px-2 xl:px-0">
-          <h3 className="text-xl font-semibold">Comments</h3>
+          <h3 className="text-xl font-semibold">Bìn luận</h3>
           <div className="w-full h-[1px] bg-input"></div>
           <div className="mt-4">
             <CommentInput postId={postPage.id} slug={params.slug} />

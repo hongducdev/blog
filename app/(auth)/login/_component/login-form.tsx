@@ -24,9 +24,11 @@ const LoginForm = () => {
     <div className="w-full h-screen flex items-center justify-center">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Login</CardTitle>
+          <CardTitle className="text-xl">
+            Đăng nhập
+          </CardTitle>
           <CardDescription>
-            Login with your GitHub account to continue
+            Đăng nhập bằng Github để tiếp tục
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -41,7 +43,7 @@ const LoginForm = () => {
             ) : (
               <>
                 <Github />
-                <span>Sign up with GitHub</span>
+                <span>Đăng nhập với Github</span>
               </>
             )}
           </Button>

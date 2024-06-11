@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import moment from "moment";
+import "moment/locale/vi";
 import {
   Tooltip,
   TooltipContent,
@@ -56,16 +57,16 @@ const CommentItem = ({
         emailUser: session?.user?.email,
       });
       toast({
-        title: "Reply posted",
-        description: "Your reply has been successfully posted.",
+        title: "Trả lời thành công",
+        description: "Bình luận của bạn đã được gửi",
       });
       setReplyContent("");
       setIsReplying(false);
       fetchComments(slug);
     } catch (error) {
       toast({
-        title: "An error occurred",
-        description: "Failed to post reply",
+        title: "Lỗi",
+        description: "Đã có lỗi xảy ra khi gửi bình luận",
       });
     }
   };
@@ -98,7 +99,9 @@ const CommentItem = ({
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-xs text-zinc-600 dark:text-zinc-400">
-                      {moment(comment.createdAt).format("MMMM Do YYYY, h:mm a")}
+                      {moment(comment.createdAt).format(
+                        "HH:mm:ss, [ngày] DD [tháng] MM [năm] YYYY"
+                      )}
                     </span>
                   </TooltipContent>
                 </Tooltip>
@@ -113,14 +116,14 @@ const CommentItem = ({
                   <Input
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
-                    placeholder="Write a reply..."
+                    placeholder="Trả lời..."
                     className="flex-1"
                   />
                   <Button variant="ghost" onClick={handleReply}>
-                    Reply
+                    Trả lời
                   </Button>
                   <Button variant="ghost" onClick={() => setIsReplying(false)}>
-                    Cancel
+                    Hủy
                   </Button>
                 </div>
               ) : (
@@ -128,7 +131,7 @@ const CommentItem = ({
                   onClick={() => setIsReplying(true)}
                   className="my-1 text-zinc-600 dark:text-zinc-400 text-sm"
                 >
-                  Reply
+                  Trả lời
                 </button>
               )}
             </div>

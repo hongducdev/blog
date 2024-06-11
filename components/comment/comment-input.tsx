@@ -40,7 +40,7 @@ interface CommentInputProps {
 
 const formSchema = z.object({
   content: z.string().min(2, {
-    message: "Comment must be at least 2 characters long",
+    message: "Bình luận phải chứa ít nhất 2 ký tự"
   }),
 });
 
@@ -93,15 +93,15 @@ const CommentInput = ({ postId, slug }: CommentInputProps) => {
       if (response.status === 201) {
         form.reset();
         toast({
-          title: "Comment posted",
-          description: "Your comment has been successfully posted.",
+          title: "Bình luận thành công",
+          description: "Bình luận của bạn đã được gửi",
         });
         fetchComments(slug);
       }
     } catch (error) {
       toast({
-        title: "An error occurred",
-        description: "Failed to post comment",
+        title: "Lỗi",
+        description: "Đã có lỗi xảy ra khi gửi bình luận",
       });
     } finally {
       setIsLoading(false);
@@ -135,7 +135,7 @@ const CommentInput = ({ postId, slug }: CommentInputProps) => {
                         <FormControl>
                           <Input
                             {...field}
-                            placeholder="Add a comment..."
+                            placeholder="Thêm bình luận..."
                             className="w-full border-none ring-0 ring-offset-0 outline-none focus:outline-none focus:ring-0 focus:ring-offset-0"
                             type="text"
                           />
@@ -160,9 +160,9 @@ const CommentInput = ({ postId, slug }: CommentInputProps) => {
         ) : (
           <div className="text-center">
             <p className="">
-              You need to be logged in to comment.{" "}
+              Bạn cần đăng nhập để bình luận.{" "}
               <Link href="/login" className="font-medium underline">
-                Login
+                Đăng nhập ngay
               </Link>
             </p>
           </div>

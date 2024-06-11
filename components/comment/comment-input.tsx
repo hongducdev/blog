@@ -146,7 +146,9 @@ const CommentInput = ({ postId, slug }: CommentInputProps) => {
                   />
                   <Button variant="ghost" type="submit">
                     {isLoading ? (
-                      <Loader className="w-5 h-5" />
+                      <div className="animate-spin">
+                        <Loader className="w-5 h-5" />
+                      </div>
                     ) : (
                       <Send className="w-5 h-5" />
                     )}

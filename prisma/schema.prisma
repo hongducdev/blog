@@ -42,7 +42,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  comments      Comment[] // Add this line
+  comments      Comment[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -86,4 +86,7 @@ model Comment {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   emailUser String
   user      User?    @relation(fields: [emailUser], references: [email], onDelete: Cascade)
+  parentId  String?  @db.ObjectId
+  parent    Comment? @relation("CommentToReply", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("CommentToReply")
 }

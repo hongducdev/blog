@@ -20,6 +20,19 @@ import axios from "axios";
 import { toast } from "../ui/use-toast";
 import CommentItem from "./comment-item";
 
+interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  emailUser: string;
+  user: {
+    name: string;
+    image: string;
+  };
+  parentId?: string; // Optional parentId for nested comments
+  replies: Comment[]; // Array to hold replies
+}
+
 interface CommentInputProps {
   postId: string;
   slug: string;
@@ -34,11 +47,29 @@ const formSchema = z.object({
 const CommentInput = ({ postId, slug }: CommentInputProps) => {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [comments, setComments] = useState<any[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   const fetchComments = async (slug: string) => {
     const response = await axios.get(`/api/posts/${slug}`);
-    setComments(response.data?.comments);
+    const fetchedComments: Comment[] = response.data?.comments;
+
+    const commentMap: { [key: string]: Comment } = {};
+    const nestedComments: Comment[] = [];
+
+    fetchedComments.forEach((comment) => {
+      comment.replies = [];
+      commentMap[comment.id] = comment;
+    });
+
+    fetchedComments.forEach((comment) => {
+      if (comment.parentId) {
+        commentMap[comment.parentId]?.replies?.push(comment);
+      } else {
+        nestedComments.push(comment);
+      }
+    });
+
+    setComments(nestedComments);
   };
 
   useEffect(() => {
@@ -136,20 +167,16 @@ const CommentInput = ({ postId, slug }: CommentInputProps) => {
         )}
       </div>
       <div className="mt-4 flex flex-col gap-3">
-        {comments.map(
-          (comment: {
-            id: string;
-            content: string;
-            createdAt: string;
-            emailUser: string;
-            user: {
-              name: string;
-              image: string;
-            };
-          }) => (
-            <CommentItem key={comment.id} comment={comment} />
-          )
-        )}
+        {comments.map((comment) => (
+          <CommentItem
+            key={comment.id}
+            comment={comment}
+            postId={postId}
+            slug={slug}
+            fetchComments={fetchComments}
+            depth={1} // Start with initial depth
+          />
+        ))}
       </div>
     </div>
   );

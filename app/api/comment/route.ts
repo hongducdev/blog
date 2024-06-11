@@ -10,7 +10,7 @@ export const POST = async (req: Request) => {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  const { postId, content } = await req.json();
+  const { postId, content, parentId } = await req.json();
 
   const emailUser = session?.user?.email as string;
 
@@ -21,13 +21,13 @@ export const POST = async (req: Request) => {
     );
   }
 
-  // Create comment in database
   try {
     const newComment = await prisma.comment.create({
       data: {
         postId,
         content,
         emailUser,
+        parentId: parentId || null,
       },
     });
     return NextResponse.json(newComment, { status: 201 });

@@ -1,5 +1,7 @@
 # 🌟 Hongdudev's Personal Blog 🌟
 
+[![wakatime](https://wakatime.com/badge/github/hongducdev/blog.svg)](https://wakatime.com/badge/github/hongducdev/blog)
+
 A personal blog by hongdudev. I write about web development, programming, and tech.
 
 ## 🚀 Features

@@ -66,7 +66,7 @@ const TagPage = async ({ params }: TagPageProps) => {
     }
 
     return (
-      <div className="max-w-7xl mx-auto px-2 lg:px-0">
+      <div className="max-w-7xl mx-auto px-2 xl:px-0">
         <div className="my-4 flex flex-row space-x-3">
           {tags.map((tag: Tag) => (
             <Badge

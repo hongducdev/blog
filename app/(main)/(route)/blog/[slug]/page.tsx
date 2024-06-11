@@ -97,7 +97,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
             </div>
           </div>
         </div>
-        <section className="max-w-7xl w-full mx-auto px-2 lg:px-0">
+        <section className="max-w-7xl w-full mx-auto px-2 xl:px-0">
           <div className="py-5">
             <NavPageDetail
               title={postPage.title}
@@ -109,7 +109,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
           </article>
         </section>
 
-        <div className="max-w-7xl w-full mx-auto px-2 lg:px-0">
+        <div className="max-w-7xl w-full mx-auto px-2 xl:px-0">
           <h3 className="text-xl font-semibold">Comments</h3>
           <div className="w-full h-[1px] bg-input"></div>
           <div className="mt-4">

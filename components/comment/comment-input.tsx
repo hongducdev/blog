@@ -29,8 +29,8 @@ interface Comment {
     name: string;
     image: string;
   };
-  parentId?: string; // Optional parentId for nested comments
-  replies: Comment[]; // Array to hold replies
+  parentId?: string;
+  replies: Comment[];
 }
 
 interface CommentInputProps {
@@ -174,7 +174,7 @@ const CommentInput = ({ postId, slug }: CommentInputProps) => {
             postId={postId}
             slug={slug}
             fetchComments={fetchComments}
-            depth={1} // Start with initial depth
+            depth={1}
           />
         ))}
       </div>

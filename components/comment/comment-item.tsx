@@ -77,7 +77,7 @@ const CommentItem = ({
             {comment.user?.name?.charAt(0) || "?"}
           </AvatarFallback>
         </Avatar>
-        <div className="bg-gray-100 p-3 rounded-md w-full">
+        <div className="bg-zinc-100 dark:bg-zinc-900 p-3 rounded-md w-full">
           <p className="font-semibold">{comment.user?.name}</p>
           <p>{comment.content}</p>
           {session && depth < 3 && (

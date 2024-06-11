@@ -104,7 +104,7 @@ const BlogPage = async ({ params }: BlogPageProps) => {
               link={`${process.env.BASE_URL}/blog/${postPage.slug}`}
             />
           </div>
-          <article className="prose dark:prose-invert max-w-7xl w-full mx-auto">
+          <article className="prose dark:prose-invert max-w-7xl w-full mx-auto text-black dark:text-white">
             <MarkdownRender mdString={postPage.content} />
           </article>
         </section>

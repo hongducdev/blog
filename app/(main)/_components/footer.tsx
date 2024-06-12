@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="border-y">
       <div className="max-w-7xl mx-auto flex flex-col py-12 px-3 text-xs lg:text-sm">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <div className="">
             <h5 className="text-xl font-semibold">Bản quyền</h5>
             <div className="mt-5">

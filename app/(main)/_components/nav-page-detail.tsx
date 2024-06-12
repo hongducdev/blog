@@ -26,8 +26,8 @@ const NavPageDetail = ({ title, link }: NavPageDetailProps) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(link);
     toast({
-      title: "Link copied!",
-      description: "The link has been copied to your clipboard.",
+      title: "Sao chép thành công",
+      description: "Đường dẫn đã được sao chép vào bộ nhớ tạm",
     });
   };
 
@@ -63,7 +63,7 @@ const NavPageDetail = ({ title, link }: NavPageDetailProps) => {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            <BreadcrumbLink href="/">Trang chủ</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -83,7 +83,7 @@ const NavPageDetail = ({ title, link }: NavPageDetailProps) => {
             onClick={handleCopyLink}
             className="flex items-center space-x-10"
           >
-            <span>Copy link</span>
+            <span>Sao chép đường dẫn</span>
             <Link2 className="w-4 h-4" />
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleShare("twitter")}>

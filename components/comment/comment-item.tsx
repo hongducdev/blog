@@ -87,26 +87,7 @@ const CommentItem = ({
         </Avatar>
         <div className="flex flex-col w-full">
           <div className="bg-zinc-100 dark:bg-zinc-900 p-3 rounded-2xl w-full flex-1">
-            <div className="flex items-center space-x-3">
-              <p className="font-semibold">{comment.user?.name}</p>
-              <span className="text-zinc-600">•</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <span className="text-xs text-zinc-600 dark:text-zinc-400">
-                      {moment(comment.createdAt).fromNow()}
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <span className="text-xs text-zinc-600 dark:text-zinc-400">
-                      {moment(comment.createdAt).format(
-                        "HH:mm:ss, [ngày] DD [tháng] MM [năm] YYYY"
-                      )}
-                    </span>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
+            <p className="font-semibold">{comment.user?.name}</p>
             <p>{comment.content}</p>
           </div>
           {session && depth < 3 && (
@@ -127,12 +108,31 @@ const CommentItem = ({
                   </Button>
                 </div>
               ) : (
-                <button
-                  onClick={() => setIsReplying(true)}
-                  className="my-1 text-zinc-600 dark:text-zinc-400 text-sm"
-                >
-                  Trả lời
-                </button>
+                <div className="px-2 flex items-center space-x-2 text-zinc-600 dark:text-zinc-400 text-sm my-1">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <span className="">
+                          {moment(comment.createdAt).fromNow()}
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <span className="">
+                          {moment(comment.createdAt).format(
+                            "HH:mm:ss, [ngày] DD [tháng] MM [năm] YYYY"
+                          )}
+                        </span>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span>•</span>
+                  <button
+                    onClick={() => setIsReplying(true)}
+                    className="text-zinc-800 dark:text-zinc-300 font-semibold underline"
+                  >
+                    Trả lời
+                  </button>
+                </div>
               )}
             </div>
           )}

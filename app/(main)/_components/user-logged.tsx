@@ -1,6 +1,5 @@
 "use client";
 import { useSession, signOut } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import AvatarUser from "@/components/avatar-user";
 
 const UserLogged = () => {
   const { data: session } = useSession();
@@ -20,14 +20,7 @@ const UserLogged = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar>
-          <AvatarImage
-            src={session.user?.image || "https://github.com/shadcn.png"}
-          />
-          <AvatarFallback>
-            {session.user?.name?.charAt(0) || "?"}
-          </AvatarFallback>
-        </Avatar>
+        <AvatarUser size="small" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>

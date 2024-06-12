@@ -1,24 +1,24 @@
 "use client";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Logo from "@/components/logo";
 import Social from "./social";
 import SearchCommand from "./search-command";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { LogIn, LogOut, Menu } from "lucide-react";
 import ThemeToggle from "@/components/theme-toggle";
 import UserLogged from "./user-logged";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import AvatarUser from "@/components/avatar-user";
 
 const Navbar = () => {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
 
   return (
     <div className="sticky top-0 p-3 z-50 bg-background/10 backdrop-blur-md">
@@ -41,26 +41,49 @@ const Navbar = () => {
             )}
           </div>
         </div>
-
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="ghost" className="lg:hidden">
+        <div className="block lg:hidden">
+          <Sheet>
+            <SheetTrigger>
               <Menu />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Hello!</DialogTitle>
-              <DialogDescription>
-                Chào mừng tới blog.hongducdev.com.
-              </DialogDescription>
-            </DialogHeader>
-            <SearchCommand />
-            <div className="text-center mx-auto">
+            </SheetTrigger>
+            <SheetContent className="flex flex-col">
+              <SheetHeader>
+                {session && status === "authenticated" ? (
+                  <div className="flex items-center gap-2">
+                    <AvatarUser size="large" />
+                    <div className="text-left">
+                      <div className="flex flex-col px-2 py-1.5 ">
+                        <span className="text-sm font-medium">
+                          {session.user?.name}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {session.user?.email}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <SheetTitle>Chào mừng bạn</SheetTitle>
+                )}
+              </SheetHeader>
+              <SearchCommand />
               <ThemeToggle />
-            </div>
-          </DialogContent>
-        </Dialog>
+              <div className="mt-auto">
+                {status === "authenticated" ? (
+                  <Button onClick={() => signOut()} className="w-full">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Đăng xuất</span>
+                  </Button>
+                ) : (
+                  <Button className="w-full">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    <Link href="/login">Đăng nhập</Link>
+                  </Button>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </nav>
     </div>
   );

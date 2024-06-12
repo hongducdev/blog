@@ -36,7 +36,7 @@ const WebShareWrapper = ({ title, text, url }: WebShareWrapperProps) => {
 
   return (
     <DropdownMenuItem onClick={handleShare}>
-      {text}
+      Chia sẻ bài viết qua...
     </DropdownMenuItem>
   );
 };

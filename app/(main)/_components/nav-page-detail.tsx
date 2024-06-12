@@ -104,7 +104,7 @@ const NavPageDetail = ({ title, link }: NavPageDetailProps) => {
           <WebShareWrapper
             title={title}
             url={link}
-            text="Chia sẻ bài viết qua..."
+            text="Chia sẻ bài viết"
           />
         </DropdownMenuContent>
       </DropdownMenu>

@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Ellipsis, Link2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import WebShareWrapper from "@/components/web-share-wrapper";
 
 interface NavPageDetailProps {
   title: string;
@@ -86,18 +87,25 @@ const NavPageDetail = ({ title, link }: NavPageDetailProps) => {
             <span>Sao chép đường dẫn</span>
             <Link2 className="w-4 h-4" />
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleShare("twitter")}>
-            Twitter
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleShare("facebook")}>
-            Facebook
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleShare("linkedin")}>
-            LinkedIn
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleShare("reddit")}>
-            Reddit
-          </DropdownMenuItem>
+          <div className="hidden lg:flex flex-col">
+            <DropdownMenuItem onClick={() => handleShare("twitter")}>
+              Twitter
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleShare("facebook")}>
+              Facebook
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleShare("linkedin")}>
+              LinkedIn
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleShare("reddit")}>
+              Reddit
+            </DropdownMenuItem>
+          </div>
+          <WebShareWrapper
+            title={title}
+            url={link}
+            text="Chia sẻ bài viết qua..."
+          />
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

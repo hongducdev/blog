@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -73,7 +72,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-black dark:text-white;
   }
 }
 
@@ -307,21 +306,5 @@
     padding: 1em;
     border-radius: 0.5em;
     overflow-x: auto;
-  }
-
-  /* Custom scroll bar */
-  /* width */
-  ::-webkit-scrollbar {
-    @apply w-2 h-2;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    @apply bg-transparent;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    @apply rounded-lg bg-gradient-to-br from-[#4AC29A] to-[#BDFFF3];
   }
 }

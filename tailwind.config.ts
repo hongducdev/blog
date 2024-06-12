@@ -82,6 +82,9 @@ const config = {
       backgroundImage: {
         "custom-cover": 'url("var(--cover-url)")',
       },
+      fontFamily: {
+        "roboto-mono": ["Roboto Mono", "monospace"],
+      }
     },
   },
   plugins: [

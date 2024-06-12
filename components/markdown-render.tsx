@@ -45,7 +45,7 @@ export default function MarkdownRender({ mdString }: MarkdownRenderProps) {
               style={darcula}
               language={hasLang[1]}
               PreTag="div"
-              className="mockup-code scrollbar-thin scrollbar-track-base-content/5 scrollbar-thumb-base-content/40 scrollbar-track-rounded-md scrollbar-thumb-rounded"
+              className="mockup-code scrollbar-thin scrollbar-track-base-content/5 scrollbar-thumb-base-content/40 scrollbar-track-rounded-md scrollbar-thumb-rounded font-roboto-mono"
               showLineNumbers={true}
               useInlineStyles={true}
             >

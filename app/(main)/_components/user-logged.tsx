@@ -19,7 +19,7 @@ const UserLogged = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger>
         <AvatarUser size="small" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>

@@ -18,20 +18,20 @@ const ThemeToggle = () => {
   }
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full lg:w-fit">
       <Button
         variant="outline"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        className="flex items-center justify-center w-full lg:w-12 lg:h-12 space-x-2"
+        className="flex items-center justify-center w-fit space-x-2"
       >
         {theme === "dark" ? (
           <>
-            <Sun className="h-[1.2rem] w-[1.2rem] transition-transform dark:rotate-0 dark:scale-100" />
+            <Sun className="h-4 w-4 transition-transform dark:rotate-0 dark:scale-100" />
             <span className="lg:hidden">Chế độ sáng</span>
           </>
         ) : (
           <>
-            <Moon className="h-[1.2rem] w-[1.2rem] transition-transform dark:rotate-0 dark:scale-100" />
+            <Moon className="h-4 w-4 transition-transform dark:rotate-0 dark:scale-100" />
             <span className="lg:hidden">Chế độ tối</span>
           </>
         )}

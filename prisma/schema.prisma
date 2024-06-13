@@ -69,12 +69,14 @@ model Post {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   slug        String    @unique
+  isDeleted   Boolean   @default(false)
 }
 
 model Tag {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   tagName String   @unique
   posts   Post[]
+  isDeleted Boolean  @default(false)
 }
 
 model Comment {

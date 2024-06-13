@@ -7,6 +7,9 @@ export const GET = async () => {
       orderBy: {
         createdAt: "desc",
       },
+      where: {
+        isDeleted: false,
+      },
     });
     return NextResponse.json(posts);
   } catch (error: unknown) {

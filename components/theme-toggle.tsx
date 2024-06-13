@@ -27,12 +27,12 @@ const ThemeToggle = () => {
         {theme === "dark" ? (
           <>
             <Sun className="h-[1.2rem] w-[1.2rem] transition-transform dark:rotate-0 dark:scale-100" />
-            <span className="lg:hidden">Chế độ tối</span>
+            <span className="lg:hidden">Chế độ sáng</span>
           </>
         ) : (
           <>
             <Moon className="h-[1.2rem] w-[1.2rem] transition-transform dark:rotate-0 dark:scale-100" />
-            <span className="lg:hidden">Chế độ sáng</span>
+            <span className="lg:hidden">Chế độ tối</span>
           </>
         )}
       </Button>

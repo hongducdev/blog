@@ -1,4 +1,3 @@
-import React from "react";
 import CreateTag from "./_components/create-tag";
 import ManageTag from "./_components/manage-tag";
 

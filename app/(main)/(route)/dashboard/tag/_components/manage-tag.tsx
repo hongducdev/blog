@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Check, Pencil, Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -129,7 +129,11 @@ const ManageTag = () => {
             <TableCell>
               <div className="flex items-center space-x-3">
                 <Button onClick={() => handleEdit(tag)}>
-                  <Pencil className="w-4 h-4" />
+                  {editTagId === tag.id ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    <Pencil className="w-4 h-4" />
+                  )}
                 </Button>
 
                 <AlertDialog>
@@ -141,17 +145,16 @@ const ManageTag = () => {
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>
-                        Are you absolutely sure?
+                        Xác nhận xóa tag {tag.tagName}
                       </AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete the tag.
+                        Bạn có chắc chắn muốn xóa tag này không?
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel>Hủy</AlertDialogCancel>
                       <AlertDialogAction onClick={() => handleDelete(tag.id)}>
-                        Delete
+                        Xóa
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>

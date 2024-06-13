@@ -3,21 +3,18 @@ import prisma from "@/lib/prismadb";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/authOptions";
 
+// Existing GET method
 export const GET = async () => {
   try {
-    const tags = await prisma.tag.findMany({
+    const posts = await prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       where: {
         isDeleted: false,
       },
-      include: {
-        posts: {
-          select: {
-            id: true,
-          },
-        },
-      },
     });
-    return NextResponse.json(tags);
+    return NextResponse.json(posts);
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";
@@ -25,6 +22,7 @@ export const GET = async () => {
   }
 };
 
+// POST method with authentication
 export const POST = async (req: Request) => {
   const session = await getServerSession(authOptions);
 
@@ -32,9 +30,18 @@ export const POST = async (req: Request) => {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  const { name } = await req.json();
+  const { thumbnail, title, slug, icon, tag, content, shortDesc } =
+    await req.json();
 
-  if (!name) {
+  if (
+    !thumbnail ||
+    !title ||
+    !slug ||
+    !icon ||
+    !tag ||
+    !content ||
+    !shortDesc
+  ) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }
@@ -42,23 +49,18 @@ export const POST = async (req: Request) => {
   }
 
   try {
-    const existingTag = await prisma.tag.findUnique({
-      where: { tagName: name },
-    });
-
-    if (existingTag) {
-      return NextResponse.json(
-        { error: "Tag with this name already exists." },
-        { status: 400 }
-      );
-    }
-
-    const tag = await prisma.tag.create({
+    const post = await prisma.post.create({
       data: {
-        tagName: name,
+        thumbnail,
+        title,
+        slug,
+        icon,
+        tag,
+        content,
+        shortDesc,
       },
     });
-    return NextResponse.json(tag);
+    return NextResponse.json(post);
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";
@@ -66,6 +68,7 @@ export const POST = async (req: Request) => {
   }
 };
 
+// PUT method with authentication
 export const PUT = async (req: Request) => {
   const session = await getServerSession(authOptions);
 
@@ -73,9 +76,19 @@ export const PUT = async (req: Request) => {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  const { id, newName } = await req.json();
+  const { id, thumbnail, title, slug, icon, tag, content, shortDesc } =
+    await req.json();
 
-  if (!id || !newName) {
+  if (
+    !id ||
+    !thumbnail ||
+    !title ||
+    !slug ||
+    !icon ||
+    !tag ||
+    !content ||
+    !shortDesc
+  ) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }
@@ -83,32 +96,21 @@ export const PUT = async (req: Request) => {
   }
 
   try {
-    const existingTag = await prisma.tag.findUnique({
-      where: { id: id },
-    });
-
-    if (!existingTag) {
-      return NextResponse.json({ error: "Tag not found." }, { status: 404 });
-    }
-
-    const duplicateTag = await prisma.tag.findUnique({
-      where: { tagName: newName },
-    });
-
-    if (duplicateTag) {
-      return NextResponse.json(
-        { error: "Tag with this name already exists." },
-        { status: 400 }
-      );
-    }
-
-    const updatedTag = await prisma.tag.update({
-      where: { id: id },
+    const post = await prisma.post.update({
+      where: {
+        id,
+      },
       data: {
-        tagName: newName,
+        thumbnail,
+        title,
+        slug,
+        icon,
+        tag,
+        content,
+        shortDesc,
       },
     });
-    return NextResponse.json(updatedTag);
+    return NextResponse.json(post);
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";
@@ -116,6 +118,7 @@ export const PUT = async (req: Request) => {
   }
 };
 
+// DELETE method with authentication
 export const DELETE = async (req: Request) => {
   const session = await getServerSession(authOptions);
 
@@ -133,21 +136,11 @@ export const DELETE = async (req: Request) => {
   }
 
   try {
-    const existingTag = await prisma.tag.findUnique({
-      where: { id: id },
+    const post = await prisma.post.update({
+      where: { id },
+      data: { isDeleted: true },
     });
-
-    if (!existingTag) {
-      return NextResponse.json({ error: "Tag not found." }, { status: 404 });
-    }
-
-    const deletedTag = await prisma.tag.update({
-      where: { id: id },
-      data: {
-        isDeleted: true,
-      },
-    });
-    return NextResponse.json(deletedTag);
+    return NextResponse.json(post);
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";

@@ -3,7 +3,7 @@ import prisma from "@/lib/prismadb";
 
 export async function GET(
   request: NextRequest,
-  {params}: { params: { slug: string } }
+  { params }: { params: { slug: string } }
 ) {
   const slug = params.slug;
 
@@ -24,13 +24,13 @@ export async function GET(
                 name: true,
                 image: true,
               },
-            }
+            },
           },
           orderBy: {
             createdAt: "desc",
           },
         },
-      }
+      },
     });
 
     if (!postPage) {

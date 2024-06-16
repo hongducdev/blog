@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/config/site";
-import Navbar from "./(main)/_components/navbar";
-import Footer from "./(main)/_components/footer";
 import { Toaster } from "@/components/ui/toaster";
 import NextAuthProvider from "@/components/provider";
 
@@ -64,6 +62,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
+  robots: "index, follow",
 };
 
 export default function RootLayout({

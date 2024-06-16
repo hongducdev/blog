@@ -37,6 +37,7 @@ export const generateMetadata = async ({
       alternates: {
         canonical: `${process.env.BASE_URL}/tag/${params.tagName}`,
       },
+      robots: "index, follow",
     };
   }
 

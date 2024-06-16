@@ -49,7 +49,8 @@ export const generateMetadata = async ({
       },
       alternates:  {
         canonical: `${process.env.BASE_URL}/blog/${postPage.slug}`,
-      }
+      },
+      robots: "index, follow",
     };
   } catch (error) {
     console.error("Error fetching post metadata:", error);

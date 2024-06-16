@@ -1,9 +1,18 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prismadb";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/config/authOptions";
 
 export const GET = async () => {
   try {
-    const tags = await prisma.tag.findMany();
+    const tags = await prisma.tag.findMany({
+      orderBy: {
+        tagName: "asc",
+      },
+      include: {
+        posts: true,
+      },
+    });
     return NextResponse.json(tags);
   } catch (error: unknown) {
     const errorMessage =
@@ -13,6 +22,17 @@ export const GET = async () => {
 };
 
 export const POST = async (req: Request) => {
+
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
+  if (session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Not authorized" }, { status: 403 });
+  }
+
   const { name } = await req.json();
 
   if (!name) {

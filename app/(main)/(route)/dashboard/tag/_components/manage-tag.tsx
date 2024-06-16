@@ -94,7 +94,7 @@ const ManageTag = () => {
       });
     }
   };
-
+  
   return (
     <Table>
       <TableCaption>A list of your recent tags.</TableCaption>

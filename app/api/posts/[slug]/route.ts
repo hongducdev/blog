@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prismadb";
 
-export async function GET(
+export const GET = async (
   request: NextRequest,
   { params }: { params: { slug: string } }
-) {
+) => {
   const slug = params.slug;
 
   if (!slug) {
@@ -43,4 +43,4 @@ export async function GET(
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
-}
+};

@@ -7,8 +7,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!session) {
     return redirect("/login");
-  } else if (
-    session?.user?.email !== process.env.EMAIL_ADMIN  ) {
+  } else if (session.user.role !== "ADMIN") {
     notFound();
   }
 

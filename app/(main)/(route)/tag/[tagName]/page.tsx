@@ -34,6 +34,9 @@ export const generateMetadata = async ({
     return {
       title: "Tag not found",
       description: "The tag you are looking for does not exist.",
+      alternates: {
+        canonical: `${process.env.BASE_URL}/tag/${params.tagName}`,
+      },
     };
   }
 

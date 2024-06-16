@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
   },
+  alternates: {
+    canonical: "./",
+  },
   metadataBase: new URL(siteConfig.url),
   description: siteConfig.description,
   keywords: [
